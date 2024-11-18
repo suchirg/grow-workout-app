@@ -1,6 +1,6 @@
 import { FeedObject } from "@/components/FeedObject";
 import { ThemedText } from "@/components/ThemedText";
-import { HelloWave } from "@/components/HelloWave";
+import { MuscleWave } from "@/components/HelloWave";
 
 const workouts = [
   {
@@ -27,7 +27,7 @@ export default function Feed() {
   return (
     <>
       <ThemedText type="title">
-        Workout Feed <HelloWave />
+        Workout Feed <MuscleWave />
       </ThemedText>
       {workouts.map((workout, index) => (
         <FeedObject
