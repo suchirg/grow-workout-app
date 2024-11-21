@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
-export default function FeedDetail() {
+export default function WorkoutView() {
   return (
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />

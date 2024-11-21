@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
-type FeedObjectProps = {
+type WorkoutProps = {
   id?: string;
   title?: string;
   subtitle?: string;
@@ -12,15 +12,15 @@ type FeedObjectProps = {
 };
 
 const handlePress = () => {
-  router.push("/FeedDetail");
+  router.push("/WorkoutView");
 };
 
-export function FeedObject({
+export function Workout({
   id = "Default Id",
   title = "Default Title",
   subtitle = "Default Subtitle",
   description = "Default Description",
-}: FeedObjectProps) {
+}: WorkoutProps) {
   const theme = useColorScheme() ?? "light";
 
   return (

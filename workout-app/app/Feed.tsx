@@ -1,4 +1,4 @@
-import { FeedObject } from "@/components/FeedObject";
+import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { MuscleWave } from "@/components/HelloWave";
 
@@ -30,7 +30,7 @@ export default function Feed() {
         Workout Feed <MuscleWave />
       </ThemedText>
       {workouts.map((workout, index) => (
-        <FeedObject
+        <Workout
           key={index}
           title={workout.title}
           subtitle={workout.subtitle}

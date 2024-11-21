@@ -2,5 +2,5 @@
 
 export type RootStackParamList = {
   WorkoutFeed: undefined;
-  FeedDetail: { id: string }; // Define `id` parameter for FeedDetail screen
+  WorkoutView: { id: string }; // Define `id` parameter for WorkoutView screen
 };
