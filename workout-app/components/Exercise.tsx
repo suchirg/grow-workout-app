@@ -4,23 +4,21 @@ import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
-type FeedObjectProps = {
-  id?: string;
-  title?: string;
-  subtitle?: string;
-  description?: string;
+type ExerciseProps = {
+  exerciseName: string;
+  reps: number[];
+  weights?: number[];
 };
 
 const handlePress = () => {
-  router.push("/WorkoutView");
+  router.push("/ProgressGraph");
 };
 
 export function Exercise({
-  id = "Default Id",
-  title = "Default Title",
-  subtitle = "Default Subtitle",
-  description = "Default Description",
-}: FeedObjectProps) {
+  exerciseName,
+  reps,
+  weights,
+}: ExerciseProps) {
   return (
     <ThemedView>
       <TouchableOpacity
@@ -29,9 +27,10 @@ export function Exercise({
         activeOpacity={0.8}
       >
         <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">{title}</ThemedText>
-          <ThemedText type="defaultSemiBold">{subtitle}</ThemedText>
-          <ThemedText>{description}</ThemedText>
+          <ThemedText type="subtitle">{exerciseName}</ThemedText>
+          {reps.map((rep, idx) => (
+            <ThemedText>{`Set ${idx + 1} -- weight: ${weights ? weights[idx] : ""}, reps: ${rep}`}</ThemedText>
+          ))}
         </ThemedView>
       </TouchableOpacity>
     </ThemedView>
