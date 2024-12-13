@@ -82,6 +82,7 @@ export default function WorkoutView() {
                         onGestureStart={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
                         onPointSelected={(o) => updateCurrOrm(o)}
                         onGestureEnd={() => resetCurrOrm()}
+                        panGestureDelay={0}
                     />
                 </ThemedView>
         </GestureHandlerRootView>
