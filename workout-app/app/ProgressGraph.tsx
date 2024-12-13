@@ -3,10 +3,12 @@ import { ScrollView, StyleSheet, View, Text } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useFont } from "@shopify/react-native-skia";
-import { CartesianChart, Line } from "victory-native";
 
-import spacemono from '../assets/fonts/SpaceMono-Regular.ttf';
+import { LineGraph } from "react-native-graph";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import * as Haptics from 'expo-haptics';
+import { useState } from "react";
 
 // orm = "one rep max"
 type ormChartData = {
@@ -17,8 +19,8 @@ type ormChartData = {
 }
 
 type DataPoint = {
-    timestamp: number;
-    orm: number;
+    date: Date;
+    value: number;
 }
 
 const dataFromApi: ormChartData = {
@@ -29,10 +31,10 @@ const dataFromApi: ormChartData = {
         "orm"
     ],
     values: [
-        [1634044477, 70],
-        [1635293049, 72.33],
-        [1700000000, 71.94],
-        [1734044477, 80]
+        [1726191377, 70],
+        [1728783377, 72.33],
+        [1731461777, 71.94],
+        [1734053777, 73]
     ]
 }
 
@@ -42,8 +44,8 @@ function reformatChartData(dataFromApi: ormChartData): DataPoint[] {
     const reformattedData = [];
     for (const dataPoint of dataFromApi.values){
         reformattedData.push({
-            timestamp: dataPoint[0],
-            orm: dataPoint[1]
+            date: new Date(dataPoint[0]),
+            value: dataPoint[1]
         });
     }
 
@@ -52,48 +54,53 @@ function reformatChartData(dataFromApi: ormChartData): DataPoint[] {
 
 export default function WorkoutView() {
     const DATA = reformatChartData(dataFromApi);
+    const graphColor = "#4484B2";
+
+    const [currOrm, setCurrOrm] = useState(DATA[DATA.length - 1]["value"]);
+
+    function updateCurrOrm(newOrm: DataPoint): void {
+        setCurrOrm(newOrm.value);
+    }
+
+    function resetCurrOrm(): void {
+        setCurrOrm(DATA[DATA.length - 1]["value"]);
+    }
 
     return (
         <>
-        <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
-            {/* <ThemedView style={styles.container}> */}
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <Text style={styles.title}>{dataFromApi.exercise_name}</Text>
-                <View style={styles.chartContainer}>
-                    <CartesianChart data={DATA} xKey="timestamp" yKeys={["orm"]} axisOptions={{font: useFont(spacemono, 12)}}>
-                        {({ points }) => (
-                            <Line
-                                points={points.orm}
-                                color="red"
-                                strokeWidth={3}
-                                animate={{ type: "timing", duration: 300 }}
-                            />
-                        )}
-                    </CartesianChart>
-                </View>
-            </ScrollView>
-            {/* </ThemedView> */}
+        <GestureHandlerRootView>
+            <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
+                <ThemedView style={styles.container}>
+                    <ThemedText type="title" style={styles.title}>{dataFromApi.exercise_name}</ThemedText>
+                    <ThemedText type="subtitle" style={styles.title}>{currOrm}</ThemedText>
+                    <LineGraph
+                        style={styles.graph}
+                        animated={true}
+                        enablePanGesture={true}
+                        color={graphColor}
+                        points={DATA}
+                        onGestureStart={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+                        onPointSelected={(o) => updateCurrOrm(o)}
+                        onGestureEnd={() => resetCurrOrm()}
+                    />
+                </ThemedView>
+        </GestureHandlerRootView>
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    graph: {
+        width: 300,
+        height: 500,
+    },
     container: {
         flex: 1,
         padding: 20,
-    },
-    scrollViewContent: {
-        flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "center"
     },
     title: {
         marginTop: 100,
         fontSize: 30
-    },
-    chartContainer: {
-        height: 600, // Ensure the chart has a defined height
-        width: '80%',
-        padding: 10 
     },
 });

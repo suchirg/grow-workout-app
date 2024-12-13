@@ -2,7 +2,6 @@ import { Image, StyleSheet, Platform } from "react-native";
 import { Link, Stack } from "expo-router";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
 import Feed from "./Feed";
 
 const workouts = [
