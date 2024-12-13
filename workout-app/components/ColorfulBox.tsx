@@ -25,7 +25,6 @@ export default function ColorfulBox({ handlePress, style, children }: ColorfulBo
 
 const styles = StyleSheet.create({
     exerciseBox: {
-        height: 150,
         width: '100%',
         backgroundColor: '#ff9a85',
         borderWidth: 5,

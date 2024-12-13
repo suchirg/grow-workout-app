@@ -53,15 +53,13 @@ export default function WorkoutView() {
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
-          <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
+          <ThemedText type="subtitle" style={{ marginBottom: 10}}>{workoutData.date.toDateString()}</ThemedText>
           {workoutData.exercises.map((exercise) => (
-            <ColorfulBox style={{backgroundColor: "#ff9a85", marginBottom: 10}} handlePress={handlePress}>
-              <View style={styles.exerciseFormatting}>
-                <ThemedText style={ {paddingBottom: 10} }>
-                  {exercise.name}
-                </ThemedText>
-                <Sets reps={exercise.repititions} weights={exercise.weights}/>
-              </View>
+            <ColorfulBox style={{backgroundColor: "#ff9a85", marginBottom: 15}} handlePress={handlePress}>
+              <ThemedText style={ {paddingTop: 10, paddingLeft: 10} }>
+                {exercise.name}
+              </ThemedText>
+              <Sets reps={exercise.repititions} weights={exercise.weights}/>
             </ColorfulBox>
           ))}
         </ScrollView>

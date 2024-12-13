@@ -14,8 +14,8 @@ export function Sets({
     <View style={styles.repContainer}>
       {reps.map((rep, idx) => (
         <View key={idx} style={styles.repContainer}>
-          <ThemedText>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
           <View style={styles.divider} />
+          <ThemedText style={ {paddingTop: 10, paddingLeft: 10} }>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
         </View>
       ))}
     </View>
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   divider: {
-    height: 1,
+    height: 2.5,
     width: '100%',
     backgroundColor: '#000', // Black color for the divider
-    marginVertical: 5, // Space above and below the divider
+    marginTop: 5,
   },
   repContainer: {
     gap: 8,
