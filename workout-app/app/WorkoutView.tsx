@@ -47,17 +47,16 @@ export default function WorkoutView() {
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
       <ThemedView style={styles.container}>
-        <ScrollView>
+        <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
           <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
           <View style={styles.exerciseBox}>
-              <View style={styles.exerciseName}>
-                <Text>
+              <View style={styles.exerciseFormatting}>
+                <ThemedText style={ {paddingBottom: 10} }>
                   bicep curls
-                </Text>
+                </ThemedText>
+                <Set reps={workoutData.exercises[0].repititions} weights={workoutData.exercises[0].weights}/>
               </View>
-              <View style={styles.divider} /> {/* Horizontal line (divider) */}
-              <Set reps={workoutData.exercises[0].repititions} weights={workoutData.exercises[0].weights}/>
           </View>
           {workoutData.exercises.map((exercise, idx) => (
             <ExerciseComponent key={idx} exerciseName={exercise.name} weights={exercise.weights} reps={exercise.repititions} />
@@ -72,17 +71,19 @@ const styles = StyleSheet.create({
   exerciseBox: {
     height: 150,
     width: '100%',
-    backgroundColor: '#D3D3D3',
-    borderRadius: 10,
+    backgroundColor: '#ff9a85',
+    borderWidth: 5,
+    borderColor: '#000',
   },
-  exerciseName: {
+  exerciseFormatting: {
+    paddingTop: 10,
     paddingLeft: 20
   },
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#000', // Black color for the divider
-    marginVertical: 5, // Space above and below the divider
+    backgroundColor: '#FFFFFF', // Black color for the divider
+    marginVertical: 1, // Space above and below the divider
   },
   container: {
     flex: 1,

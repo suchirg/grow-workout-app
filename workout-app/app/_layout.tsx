@@ -17,7 +17,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Barlow: require("../assets/fonts/BarlowSemiCondensed-Medium.ttf"),
+    BarlowSemiBold: require("../assets/fonts/BarlowSemiCondensed-SemiBold.ttf"),
   });
 
   useEffect(() => {

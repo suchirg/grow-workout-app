@@ -1,6 +1,7 @@
 import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { MuscleWave } from "@/components/HelloWave";
+import React from "react";
 
 const workouts = [
   {

@@ -1,6 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "./ThemedText";
 
 type SetProps = {
   reps: number[];
@@ -12,21 +11,21 @@ export function Set({
   weights,
 }: SetProps) {
   return (
-    <ThemedView>
+    <View>
       <TouchableOpacity
         style={styles.heading}
         activeOpacity={0.8}
       >
-        <ThemedView style={styles.stepContainer}>
+        <View style={styles.repContainer}>
           {reps.map((rep, idx) => (
-            <View>
-                <ThemedText key={idx}>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
-                <View style={styles.divider} /> {/* Horizontal line (divider) */}
+            <View key={idx} style={styles.repContainer}>
+              <ThemedText>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
+              <View style={styles.divider} />
             </View>
           ))}
-        </ThemedView>
+        </View>
       </TouchableOpacity>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000', // Black color for the divider
     marginVertical: 5, // Space above and below the divider
   },
-  stepContainer: {
+  repContainer: {
     gap: 8,
     marginBottom: 8,
   },
