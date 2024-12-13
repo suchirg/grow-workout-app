@@ -1,6 +1,8 @@
 import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
+import { ScrollView, StyleSheet } from "react-native";
 import { MuscleWave } from "@/components/HelloWave";
+import { ThemedView } from "@/components/ThemedView";
 import React from "react";
 
 const workouts = [
@@ -27,17 +29,33 @@ const workouts = [
 export default function Feed() {
   return (
     <>
-      <ThemedText type="title">
-        Workout Feed <MuscleWave />
-      </ThemedText>
-      {workouts.map((workout, index) => (
-        <Workout
-          key={index}
-          title={workout.title}
-          subtitle={workout.subtitle}
-          description={workout.description}
-        />
-      ))}
+    <ThemedView style={styles.container}>
+      <ScrollView>
+        <ThemedView style={{paddingTop:100}}>
+          <ThemedText type="title">
+            GROW
+          </ThemedText>
+          {workouts.map((workout, index) => (
+            <Workout style={styles.workout}
+              key={index}
+              title={workout.title}
+              subtitle={workout.subtitle}
+              description={workout.description}
+            />
+          ))}
+        </ThemedView>
+      </ScrollView>
+    </ThemedView>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+    workout: {
+      paddingTop: 20,
+    },
+    container: {
+      flex: 1,
+      alignItems: "center"
+    },
+});

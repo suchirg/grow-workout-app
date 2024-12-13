@@ -1,14 +1,14 @@
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
 import { LineGraph } from "react-native-graph";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import * as Haptics from 'expo-haptics';
 import { useState } from "react";
+import React from "react";
 
 // orm = "one rep max"
 type ormChartData = {
@@ -68,7 +68,6 @@ export default function WorkoutView() {
 
     return (
         <>
-        <GestureHandlerRootView>
             <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
                 <ThemedView style={styles.container}>
                     <ThemedText type="title" style={styles.title}>{dataFromApi.exercise_name}</ThemedText>
@@ -85,7 +84,6 @@ export default function WorkoutView() {
                         panGestureDelay={0}
                     />
                 </ThemedView>
-        </GestureHandlerRootView>
         </>
     );
 }

@@ -9,6 +9,7 @@ type WorkoutProps = {
   title?: string;
   subtitle?: string;
   description?: string;
+  style?: Record<string, any>;
 };
 
 const handlePress = () => {
@@ -20,11 +21,12 @@ export function Workout({
   title = "Default Title",
   subtitle = "Default Subtitle",
   description = "Default Description",
+  style = {}
 }: WorkoutProps) {
   const theme = useColorScheme() ?? "light";
 
   return (
-    <ThemedView>
+    <ThemedView style={style}>
       <TouchableOpacity
         onPress={handlePress}
         style={styles.heading}
