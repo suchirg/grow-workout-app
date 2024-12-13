@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { Set } from "@/components/Set";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Exercise as ExerciseComponent } from "@/components/Exercise";
+import React from "react";
 
 type Exercise = {
   name: string;
@@ -40,7 +42,6 @@ const workoutData: Workout = {
   ]
 };
 
-
 export default function WorkoutView() {
   return (
     <>
@@ -49,6 +50,15 @@ export default function WorkoutView() {
         <ScrollView>
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
           <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
+          <View style={styles.exerciseBox}>
+              <View style={styles.exerciseName}>
+                <Text>
+                  bicep curls
+                </Text>
+              </View>
+              <View style={styles.divider} /> {/* Horizontal line (divider) */}
+              <Set reps={workoutData.exercises[0].repititions} weights={workoutData.exercises[0].weights}/>
+          </View>
           {workoutData.exercises.map((exercise, idx) => (
             <ExerciseComponent key={idx} exerciseName={exercise.name} weights={exercise.weights} reps={exercise.repititions} />
           ))}
@@ -59,6 +69,21 @@ export default function WorkoutView() {
 }
 
 const styles = StyleSheet.create({
+  exerciseBox: {
+    height: 150,
+    width: '100%',
+    backgroundColor: '#D3D3D3',
+    borderRadius: 10,
+  },
+  exerciseName: {
+    paddingLeft: 20
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#000', // Black color for the divider
+    marginVertical: 5, // Space above and below the divider
+  },
   container: {
     flex: 1,
     alignItems: "center",
