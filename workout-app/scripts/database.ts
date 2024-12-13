@@ -1,7 +1,20 @@
-import { Exercise, WorkoutType } from '@/app/WorkoutView';
 import * as SQLite from 'expo-sqlite';
 
 let db: SQLite.SQLiteDatabase | null = null;
+
+export type Exercise = {
+    id: number;
+    name: string;
+    reps: number[];
+    weights: number[]; // lbs
+    workout_id: number;
+}
+
+export type Workout = {
+    id: string;
+    title: string;
+    timestamp: Date;
+}
 
 export const getDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
     if (db){
@@ -20,16 +33,15 @@ export const initializeDatabase = async (db: SQLite.SQLiteDatabase) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 timestamp DATETIME NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             );
         `);
         await db.execAsync(`
             CREATE TABLE IF NOT EXISTS exercise (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
                 reps TEXT NOT NULL,  -- Store reps as JSON string
                 weights TEXT NOT NULL,  -- Store weight as JSON string
                 workout_id INTEGER,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (workout_id) REFERENCES workout(id)
             );
         `);

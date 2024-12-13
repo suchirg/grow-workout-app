@@ -8,47 +8,29 @@ import React from "react";
 import ColorfulBox from "@/components/ColorfulBox";
 import { getWorkouts } from "@/scripts/database";
 
-export type Exercise = {
-  name: string;
-  /**
-   * assume weight is in lbs
-   * optional because some exercises don't need a weight specifier (e.g. pullups)
-   */
-  weights?: number[];
-  repititions: number[];
-}
-
-export type WorkoutType = {
-  id: string;
-  title: string;
-  date: Date;
-  exercises: Exercise[];
-}
-
-// const workoutData: Workout = {
-//   id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
-//   title: "pull day",
-//   date: new Date(),
-//   exercises: [
-//     {
-//       name: "curls",
-//       weights: [30, 30, 30],
-//       repititions: [10, 9, 7]
-//     },
-//     {
-//       name: "squat",
-//       weights: [160, 170, 170],
-//       repititions: [12, 10, 10]
-//     }
-//   ]
-// };
+const workoutData = {
+  id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
+  title: "pull day",
+  date: new Date(),
+  exercises: [
+    {
+      name: "curls",
+      weights: [30, 30, 30],
+      repititions: [10, 9, 7]
+    },
+    {
+      name: "squat",
+      weights: [160, 170, 170],
+      repititions: [12, 10, 10]
+    }
+  ]
+};
 
 const handlePress = () => {
   router.push("/ProgressGraph");
 };
 
-export default async function WorkoutView() {
-  const workoutData: WorkoutType[] = await getWorkouts();
+export default function WorkoutView() {
   return (
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
