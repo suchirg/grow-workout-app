@@ -1,4 +1,4 @@
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -16,12 +16,14 @@ type Exercise = {
 }
 
 type Workout = {
+  id: string;
   title: string;
   date: Date;
   exercises: Exercise[];
 }
 
 const workoutData: Workout = {
+  id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
   title: "pull day",
   date: new Date(),
   exercises: [
@@ -47,8 +49,8 @@ export default function WorkoutView() {
         <ScrollView>
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
           <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
-          {workoutData.exercises.map((exercise) => (
-            <ExerciseComponent exerciseName={exercise.name} weights={exercise.weights} reps={exercise.repititions} />
+          {workoutData.exercises.map((exercise, idx) => (
+            <ExerciseComponent key={idx} exerciseName={exercise.name} weights={exercise.weights} reps={exercise.repititions} />
           ))}
         </ScrollView>
       </ThemedView>

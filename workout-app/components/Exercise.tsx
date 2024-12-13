@@ -29,7 +29,7 @@ export function Exercise({
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">{exerciseName}</ThemedText>
           {reps.map((rep, idx) => (
-            <ThemedText>{`Set ${idx + 1} -- weight: ${weights ? weights[idx] : ""}, reps: ${rep}`}</ThemedText>
+            <ThemedText key={idx}>{`Set ${idx + 1} -- weight: ${weights ? weights[idx] : ""}, reps: ${rep}`}</ThemedText>
           ))}
         </ThemedView>
       </TouchableOpacity>
