@@ -1,22 +1,22 @@
-import { GestureResponderEvent, StyleSheet, TouchableOpacity } from "react-native";
+import { GestureResponderEvent, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { ThemedView } from "./ThemedView";
 import React from "react";
 
 type ColorfulBoxProps = {
-    color: string;
     handlePress: (event: GestureResponderEvent) => void;
+    style: StyleProp<ViewStyle>;
     children: React.ReactNode;
 }
 
-export default function ColorfulBox({ color, handlePress, children }: ColorfulBoxProps){
+export default function ColorfulBox({ handlePress, style, children }: ColorfulBoxProps){
     return (
         <ThemedView>
             <TouchableOpacity
             onPress={handlePress}
             activeOpacity={0.8}
             >
-                <ThemedView style={ {...styles.exerciseBox, backgroundColor: color} }>
-                        {children}
+                <ThemedView style={ {...styles.exerciseBox, ...StyleSheet.flatten(style)} }>
+                    {children}
                 </ThemedView>
             </TouchableOpacity>
         </ThemedView>

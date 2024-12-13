@@ -55,7 +55,7 @@ export default function WorkoutView() {
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
           <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
           {workoutData.exercises.map((exercise) => (
-            <ColorfulBox color={"#ff9a85"} handlePress={handlePress}>
+            <ColorfulBox style={{backgroundColor: "#ff9a85", marginBottom: 10}} handlePress={handlePress}>
               <View style={styles.exerciseFormatting}>
                 <ThemedText style={ {paddingBottom: 10} }>
                   {exercise.name}
