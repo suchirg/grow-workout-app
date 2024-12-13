@@ -1,13 +1,14 @@
 import { router, Stack } from "expo-router";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Sets } from "@/components/Set";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React from "react";
 import ColorfulBox from "@/components/ColorfulBox";
+import { getWorkouts } from "@/scripts/database";
 
-type Exercise = {
+export type Exercise = {
   name: string;
   /**
    * assume weight is in lbs
@@ -17,36 +18,37 @@ type Exercise = {
   repititions: number[];
 }
 
-type Workout = {
+export type WorkoutType = {
   id: string;
   title: string;
   date: Date;
   exercises: Exercise[];
 }
 
-const workoutData: Workout = {
-  id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
-  title: "pull day",
-  date: new Date(),
-  exercises: [
-    {
-      name: "curls",
-      weights: [30, 30, 30],
-      repititions: [10, 9, 7]
-    },
-    {
-      name: "squat",
-      weights: [160, 170, 170],
-      repititions: [12, 10, 10]
-    }
-  ]
-};
+// const workoutData: Workout = {
+//   id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
+//   title: "pull day",
+//   date: new Date(),
+//   exercises: [
+//     {
+//       name: "curls",
+//       weights: [30, 30, 30],
+//       repititions: [10, 9, 7]
+//     },
+//     {
+//       name: "squat",
+//       weights: [160, 170, 170],
+//       repititions: [12, 10, 10]
+//     }
+//   ]
+// };
 
 const handlePress = () => {
   router.push("/ProgressGraph");
 };
 
-export default function WorkoutView() {
+export default async function WorkoutView() {
+  const workoutData: WorkoutType[] = await getWorkouts();
   return (
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
