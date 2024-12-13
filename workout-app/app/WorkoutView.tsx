@@ -1,11 +1,11 @@
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
-import { Set } from "@/components/Set";
+import { Sets } from "@/components/Set";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Exercise as ExerciseComponent } from "@/components/Exercise";
 import React from "react";
+import ColorfulBox from "@/components/ColorfulBox";
 
 type Exercise = {
   name: string;
@@ -42,6 +42,10 @@ const workoutData: Workout = {
   ]
 };
 
+const handlePress = () => {
+  router.push("/ProgressGraph");
+};
+
 export default function WorkoutView() {
   return (
     <>
@@ -50,16 +54,15 @@ export default function WorkoutView() {
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
           <ThemedText type="subtitle">{workoutData.date.toDateString()}</ThemedText>
-          <View style={styles.exerciseBox}>
+          {workoutData.exercises.map((exercise) => (
+            <ColorfulBox color={"#ff9a85"} handlePress={handlePress}>
               <View style={styles.exerciseFormatting}>
                 <ThemedText style={ {paddingBottom: 10} }>
-                  bicep curls
+                  {exercise.name}
                 </ThemedText>
-                <Set reps={workoutData.exercises[0].repititions} weights={workoutData.exercises[0].weights}/>
+                <Sets reps={exercise.repititions} weights={exercise.weights}/>
               </View>
-          </View>
-          {workoutData.exercises.map((exercise, idx) => (
-            <ExerciseComponent key={idx} exerciseName={exercise.name} weights={exercise.weights} reps={exercise.repititions} />
+            </ColorfulBox>
           ))}
         </ScrollView>
       </ThemedView>
@@ -68,13 +71,6 @@ export default function WorkoutView() {
 }
 
 const styles = StyleSheet.create({
-  exerciseBox: {
-    height: 150,
-    width: '100%',
-    backgroundColor: '#ff9a85',
-    borderWidth: 5,
-    borderColor: '#000',
-  },
   exerciseFormatting: {
     paddingTop: 10,
     paddingLeft: 20

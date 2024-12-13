@@ -6,25 +6,18 @@ type SetProps = {
   weights?: number[];
 };
 
-export function Set({
+export function Sets({
   reps,
   weights,
 }: SetProps) {
   return (
-    <View>
-      <TouchableOpacity
-        style={styles.heading}
-        activeOpacity={0.8}
-      >
-        <View style={styles.repContainer}>
-          {reps.map((rep, idx) => (
-            <View key={idx} style={styles.repContainer}>
-              <ThemedText>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
-              <View style={styles.divider} />
-            </View>
-          ))}
+    <View style={styles.repContainer}>
+      {reps.map((rep, idx) => (
+        <View key={idx} style={styles.repContainer}>
+          <ThemedText>{`${rep} reps ${weights ? `x ${weights[idx]} lbs` : ""}`}</ThemedText>
+          <View style={styles.divider} />
         </View>
-      </TouchableOpacity>
+      ))}
     </View>
   );
 }
