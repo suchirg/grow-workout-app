@@ -70,9 +70,16 @@ export const initializeDatabase = async (db: SQLite.SQLiteDatabase): Promise<voi
 
 export const getWorkouts = async () => {
     const db = await getDatabase();
-    return await db.getAllAsync<Workout>(`
+    const workouts = await db.getAllAsync<Workout>(`
         SELECT * FROM workout;    
     `);
+
+    workouts.forEach((workout) => {
+        workout.timestamp = new Date(workout.timestamp);
+    })
+    
+    return workouts;
+
 }
 
 export const getExercises = async (workoutIdToFilterBy?: string) => {

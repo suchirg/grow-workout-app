@@ -2,8 +2,8 @@ import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { ScrollView, StyleSheet } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import React from "react";
-import { Workout as WorkoutType } from "@/scripts/database";
+import React, { useEffect, useState } from "react";
+import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
 import { router } from "expo-router";
 
@@ -34,6 +34,19 @@ const createWorkout = (): void => {
 };
 
 export default function Feed() {
+  const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      const data = await getWorkouts();
+      setWorkouts(data);
+    };
+
+    fetchWorkouts();
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
+  console.log("fetched workouts", workouts);
+
   return (
     <>
     <ThemedView style={{flex: 1}}>
