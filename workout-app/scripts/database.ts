@@ -78,11 +78,18 @@ export const getWorkouts = async () => {
 export const getExercises = async (workoutIdToFilterBy?: string) => {
     const db = await getDatabase();
 
-    return workoutIdToFilterBy ? await db.getAllAsync<Exercise>(`
+    const exercises =  workoutIdToFilterBy ? await db.getAllAsync<Exercise>(`
         SELECT * FROM exercise WHERE workout_id = ${workoutIdToFilterBy};
     `) : await db.getAllAsync<Exercise>(`
-        SELEct * FROM exercise;
+        SELECT * FROM exercise;
     `)
+
+    exercises.forEach((exercise) => {
+        exercise.reps = JSON.parse(exercise.reps as unknown as string);
+        exercise.weights = JSON.parse(exercise.weights as unknown as string);
+    });
+
+    return exercises;
 }
 
 export const putWorkout = async (workout: Omit<Workout, "id"> & {id?: string}): Promise<SQLite.SQLiteRunResult> => {
@@ -102,7 +109,7 @@ export const putWorkout = async (workout: Omit<Workout, "id"> & {id?: string}): 
     return res;
 }
 
-export const putExercise = async (exercise: Exercise) => {
+export const putExercise = async (exercise: Omit<Exercise, "id"> & {id?: string}) => {
     const db = await getDatabase();
 
     await db.withTransactionAsync(async () => {
@@ -110,15 +117,15 @@ export const putExercise = async (exercise: Exercise) => {
             SELECT * FROM exercise WHERE id = ${exercise.id}
         `)
 
-        if (exerciseExists.length == 0){
+        if (!exercise.id){
             db.runAsync(
                 `INSERT INTO exercise (reps, weights, workout_id) VALUES (?, ?, ?)`,
-                [exercise.reps, exercise.weights, exercise.workout_id]
+                [JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id]
             )
         } else {
             db.runAsync(
-                `UPDATE exercise SET reps = ?, SET weights = ?, SET workout_id = ? WHERE id = ?`
-                [exercise.reps, exercise.weights, exercise.workout_id, exercise.id]
+                `UPDATE exercise SET reps = ?, weights = ?, workout_id = ? WHERE id = ?`,
+                [JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id, exercise.id]
             )
         }
     })

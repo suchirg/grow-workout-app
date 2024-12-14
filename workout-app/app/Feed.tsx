@@ -25,11 +25,11 @@ const workouts: WorkoutType[] = [
   },
 ];
 
-const viewWorkout = () => {
+const viewWorkout = (): void => {
   router.push("/WorkoutView");
 };
 
-const createWorkout = () => {
+const createWorkout = (): void => {
   router.push("/WorkoutCreate");
 };
 
