@@ -4,46 +4,57 @@ import { Sets } from "@/components/Set";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React from "react";
+import React, { useState } from "react";
 import ColorfulBox from "@/components/ColorfulBox";
-import { getWorkouts } from "@/scripts/database";
-
-const workoutData = {
-  id: "f1cc485d-5209-481c-963d-09ac255c0ce8",
-  title: "pull day",
-  date: new Date(),
-  exercises: [
-    {
-      name: "curls",
-      weights: [30, 30, 30],
-      repititions: [10, 9, 7]
-    },
-    {
-      name: "squat",
-      weights: [160, 170, 170],
-      repititions: [12, 10, 10]
-    }
-  ]
-};
+import { Exercise } from "@/scripts/database";
 
 const handlePress = () => {
   router.push("/ProgressGraph");
 };
 
 export default function WorkoutView() {
+  // get workout information from props (title, timestamp)
+
+  // get exercises for workout from db
+  const exercisesFromDb: Exercise[] = [
+    {
+      id: 7, 
+      name: "bench press",
+      reps: [10, 9, 10],
+      weights: [100, 105, 95],
+      workout_id: 3
+    },
+    {
+      id: 7, 
+      name: "bench press",
+      reps: [10, 9, 10],
+      weights: [100, 105, 95],
+      workout_id: 3
+    },
+    {
+      id: 7, 
+      name: "bench press",
+      reps: [10, 9, 10],
+      weights: [100, 105, 95],
+      workout_id: 3
+    },
+  ];
+
+  const [ exercises, setExercises ] = useState(exercisesFromDb);
+
   return (
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
-          <ThemedText type="title" style={styles.title}>{workoutData.title}</ThemedText>
-          <ThemedText type="subtitle" style={{ marginBottom: 10}}>{workoutData.date.toDateString()}</ThemedText>
-          {workoutData.exercises.map((exercise) => (
-            <ColorfulBox style={{backgroundColor: "#ff9a85", marginBottom: 15}} handlePress={handlePress}>
+          <ThemedText type="title" style={styles.title}>{"pull day"}</ThemedText>
+          <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
+          {exercises.map((_, idx) => (
+            <ColorfulBox key={idx} style={{backgroundColor: "#ff9a85", marginBottom: 15}} handlePress={handlePress}>
               <ThemedText style={ {paddingTop: 10, paddingLeft: 10} }>
-                {exercise.name}
+                {exercises[idx].name}
               </ThemedText>
-              <Sets reps={exercise.repititions} weights={exercise.weights}/>
+              <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
             </ColorfulBox>
           ))}
         </ScrollView>
