@@ -3,42 +3,26 @@ import { router } from "expo-router";
 import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import React from "react";
 
 type WorkoutProps = {
-  id?: string;
-  title?: string;
-  subtitle?: string;
-  description?: string;
+  title: string;
+  timestamp: Date;
   style?: Record<string, any>;
 };
 
-const handlePress = () => {
-  router.push("/WorkoutView");
-};
-
 export function Workout({
-  id = "Default Id",
   title = "Default Title",
-  subtitle = "Default Subtitle",
-  description = "Default Description",
+  timestamp,
   style = {}
 }: WorkoutProps) {
   const theme = useColorScheme() ?? "light";
 
   return (
-    <ThemedView style={style}>
-      <TouchableOpacity
-        onPress={handlePress}
-        style={styles.heading}
-        activeOpacity={0.8}
-      >
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">{title}</ThemedText>
-          <ThemedText type="defaultSemiBold">{subtitle}</ThemedText>
-          <ThemedText>{description}</ThemedText>
-        </ThemedView>
-      </TouchableOpacity>
-    </ThemedView>
+    <>
+      <ThemedText type="subtitle">{title}</ThemedText>
+      <ThemedText>{timestamp.toDateString()}</ThemedText>
+    </>
   );
 }
 

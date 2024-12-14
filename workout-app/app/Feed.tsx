@@ -1,47 +1,51 @@
 import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { ScrollView, StyleSheet } from "react-native";
-import { MuscleWave } from "@/components/HelloWave";
 import { ThemedView } from "@/components/ThemedView";
 import React from "react";
+import { Workout as WorkoutType } from "@/scripts/database";
+import ColorfulBox from "@/components/ColorfulBox";
+import { router } from "expo-router";
 
-const workouts = [
+const workouts: WorkoutType[] = [
   {
     id: "1",
-    title: "Morning Yoga",
-    subtitle: "30 mins",
-    description: "A relaxing morning yoga session",
+    title: "pull day",
+    timestamp: new Date(),
   },
   {
     id: "2",
-    title: "HIIT Cardio",
-    subtitle: "45 mins",
-    description: "High-intensity interval training",
+    title: "push day",
+    timestamp: new Date(),
   },
   {
     id: "3",
-    title: "Strength Training",
-    subtitle: "1 hour",
-    description: "Full-body strength training workout",
+    title: "leg day",
+    timestamp: new Date(),
   },
 ];
+
+const handlePress = () => {
+  router.push("/WorkoutView");
+};
 
 export default function Feed() {
   return (
     <>
-    <ThemedView style={styles.container}>
-      <ScrollView>
-        <ThemedView style={{paddingTop:100}}>
+    <ThemedView style={{flex: 1}}>
+      <ScrollView contentContainerStyle={{alignItems:'center'}}>
+        <ThemedView style={{paddingTop:100, width:"80%"}}>
           <ThemedText type="title">
-            GROW
+            grow
           </ThemedText>
-          {workouts.map((workout, index) => (
-            <Workout style={styles.workout}
-              key={index}
-              title={workout.title}
-              subtitle={workout.subtitle}
-              description={workout.description}
-            />
+          {workouts.map((workout, idx) => (
+            <ColorfulBox key={idx} style={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10}} handlePress={handlePress}>
+              <Workout style={styles.workout}
+                key={idx}
+                title={workout.title}
+                timestamp={workout.timestamp}
+              />
+            </ColorfulBox>
           ))}
         </ThemedView>
       </ScrollView>
@@ -53,9 +57,5 @@ export default function Feed() {
 const styles = StyleSheet.create({
     workout: {
       paddingTop: 20,
-    },
-    container: {
-      flex: 1,
-      alignItems: "center"
-    },
+    }
 });
