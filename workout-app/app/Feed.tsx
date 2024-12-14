@@ -25,8 +25,12 @@ const workouts: WorkoutType[] = [
   },
 ];
 
-const handlePress = () => {
+const viewWorkout = () => {
   router.push("/WorkoutView");
+};
+
+const createWorkout = () => {
+  router.push("/WorkoutCreate");
 };
 
 export default function Feed() {
@@ -39,7 +43,7 @@ export default function Feed() {
             grow
           </ThemedText>
           {workouts.map((workout, idx) => (
-            <ColorfulBox key={idx} style={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10}} handlePress={handlePress}>
+            <ColorfulBox key={idx} style={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10}} handlePress={viewWorkout}>
               <Workout style={styles.workout}
                 key={idx}
                 title={workout.title}
@@ -47,6 +51,9 @@ export default function Feed() {
               />
             </ColorfulBox>
           ))}
+          <ColorfulBox style={{ backgroundColor: "#fcf45d", marginTop: 15, paddingBottom:10, paddingTop:10 }} handlePress={createWorkout}>
+            <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
+          </ColorfulBox>
         </ThemedView>
       </ScrollView>
     </ThemedView>

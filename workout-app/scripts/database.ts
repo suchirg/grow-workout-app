@@ -50,7 +50,7 @@ export const initializeDatabase = async (db: SQLite.SQLiteDatabase) => {
 
 export const getWorkouts = async () => {
     const db = await getDatabase();
-    return await db.getAllAsync<WorkoutType>(`
+    return await db.getAllAsync<Workout>(`
         SELECT * FROM workout;    
     `);
 }
@@ -65,14 +65,14 @@ export const getExercises = async (workoutIdToFilterBy?: string) => {
     `)
 }
 
-export const putWorkout = async (workout: WorkoutType) => {
+export const putWorkout = async (workout: Omit<Workout, "id"> & {id?: string}) => {
     // try to find the workout in the the DB with a getWorkouts call
     // if it exists, update it with the new workout object
     // else, create a new workout with the new workout object
     const db = await getDatabase();
 
     await db.withTransactionAsync(async () => {
-        const workoutExists = await db.getAllAsync<WorkoutType>(`
+        const workoutExists = await db.getAllAsync<Workout>(`
             SELECT * FROM workout WHERE id = ${workout.id}
         `)
 
@@ -94,7 +94,7 @@ export const putExercise = async (exercise: Exercise) => {
     const db = await getDatabase();
 
     await db.withTransactionAsync(async () => {
-        const exerciseExists = await db.getAllAsync<WorkoutType>(`
+        const exerciseExists = await db.getAllAsync<Workout>(`
             SELECT * FROM exercise WHERE id = ${exercise.id}
         `)
 
