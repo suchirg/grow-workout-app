@@ -2,10 +2,11 @@ import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { ScrollView, StyleSheet } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useEffect, useState } from "react";
-import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
+import React, { useEffect } from "react";
+import { getWorkouts } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
 import { router } from "expo-router";
+import { useWorkoutContext } from "@/components/WorkoutContext";
 
 const viewWorkout = (): void => {
   router.push("/WorkoutView");
@@ -16,7 +17,7 @@ const createWorkout = (): void => {
 };
 
 export default function Feed() {
-  const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
+  const { workouts, setWorkouts } = useWorkoutContext();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
