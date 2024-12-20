@@ -3,13 +3,40 @@ import { ScrollView, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
-import { putWorkout } from "@/scripts/database";
+import { putWorkout, Workout } from "@/scripts/database";
 import { Picker } from "@react-native-picker/picker";
 import { useWorkoutContext } from "@/components/WorkoutContext";
 
 const viewFeed = () => {
   router.push("/Feed");
 };
+
+function TemplateWorkoutPicker(
+  selectedTemplateWorkoutId: number,
+  setSelectedTemplateWorkoutId: React.Dispatch<React.SetStateAction<number>>,
+  setWorkoutName: React.Dispatch<React.SetStateAction<string>>, 
+  workouts: Workout[]
+) {
+
+  return (
+    <>
+      <ThemedText type="subtitle" style={styles.subtitle}>template from</ThemedText>
+      <Picker
+        selectedValue={selectedTemplateWorkoutId.toString()}
+        onValueChange={(selectedWorkoutId: string) => {
+          setSelectedTemplateWorkoutId(Number(selectedWorkoutId));
+          setWorkoutName(workouts.find((workout) => Number(workout.id) === Number(selectedWorkoutId))?.title || "");
+        }
+        }
+        itemStyle={styles.pickerItem}>
+        <Picker.Item label="None" value="-1" />
+        {workouts.map((workout, idx) => (
+          <Picker.Item label={`${workout.title} - ${workout.timestamp.toDateString()}`} value={workout.id.toString()} key={idx} />
+        ))}
+      </Picker>
+    </>
+  );
+}
 
 export default function WorkoutCreate() {
   // TODO: Add validation that workoutName is not empty
@@ -33,20 +60,7 @@ export default function WorkoutCreate() {
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>create workout</ThemedText>
-          <ThemedText type="subtitle" style={styles.subtitle}>template from</ThemedText>
-          <Picker
-            selectedValue={selectedTemplateWorkoutId.toString()}
-            onValueChange={(selectedWorkoutId: string) => {
-              setSelectedTemplateWorkoutId(Number(selectedWorkoutId));
-              setWorkoutName(workouts.find((workout) => Number(workout.id) === Number(selectedWorkoutId))?.title || "");
-            }
-            }
-            itemStyle={styles.pickerItem}>
-            <Picker.Item label="None" value="-1" />
-            {workouts.map((workout, idx) => (
-              <Picker.Item label={`${workout.title} - ${workout.timestamp.toDateString()}`} value={workout.id.toString()} key={idx} />
-            ))}
-          </Picker>
+          { workouts.length > 0 ? TemplateWorkoutPicker(selectedTemplateWorkoutId, setSelectedTemplateWorkoutId, setWorkoutName, workouts) : null }
           <ThemedText type="subtitle" style={styles.subtitle}>workout name</ThemedText>
           <TextInput
             style={styles.input}
