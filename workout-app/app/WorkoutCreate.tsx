@@ -14,7 +14,7 @@ const viewFeed = () => {
 export default function WorkoutCreate() {
   // TODO: Add validation that workoutName is not empty
   const [workoutName, setWorkoutName] = useState("");
-  const [selectedTemplateWorkout, setSelectedTemplateWorkout] = useState(-1);
+  const [selectedTemplateWorkoutId, setSelectedTemplateWorkoutId] = useState(-1);
   const { workouts } = useWorkoutContext();
 
   const handleSave = async () => {
@@ -35,14 +35,16 @@ export default function WorkoutCreate() {
           <ThemedText type="title" style={styles.title}>create workout</ThemedText>
           <ThemedText type="subtitle" style={styles.subtitle}>template from</ThemedText>
           <Picker
-            selectedValue={selectedTemplateWorkout.toString()}
-            onValueChange={(selectedWorkoutId: string) =>
-              setSelectedTemplateWorkout(Number(selectedWorkoutId))
+            selectedValue={selectedTemplateWorkoutId.toString()}
+            onValueChange={(selectedWorkoutId: string) => {
+              setSelectedTemplateWorkoutId(Number(selectedWorkoutId));
+              setWorkoutName(workouts.find((workout) => Number(workout.id) === Number(selectedWorkoutId))?.title || "");
+            }
             }
             itemStyle={styles.pickerItem}>
             <Picker.Item label="None" value="-1" />
-            {workouts.map((workout) => (
-              <Picker.Item label={`${workout.title} - ${workout.timestamp.toDateString()}`} value={workout.id.toString()} />
+            {workouts.map((workout, idx) => (
+              <Picker.Item label={`${workout.title} - ${workout.timestamp.toDateString()}`} value={workout.id.toString()} key={idx} />
             ))}
           </Picker>
           <ThemedText type="subtitle" style={styles.subtitle}>workout name</ThemedText>
