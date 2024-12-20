@@ -4,13 +4,18 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
 import { putWorkout } from "@/scripts/database";
+import { Picker } from "@react-native-picker/picker";
+import { useWorkoutContext } from "@/components/WorkoutContext";
 
 const viewFeed = () => {
   router.push("/Feed");
 };
 
 export default function WorkoutCreate() {
+  // TODO: Add validation that workoutName is not empty
   const [workoutName, setWorkoutName] = useState("");
+  const [selectedTemplateWorkout, setSelectedTemplateWorkout] = useState(-1);
+  const { workouts } = useWorkoutContext();
 
   const handleSave = async () => {
     // Handle save logic here
@@ -28,13 +33,25 @@ export default function WorkoutCreate() {
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>create workout</ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>template from</ThemedText>
+          <Picker
+            selectedValue={selectedTemplateWorkout.toString()}
+            onValueChange={(selectedWorkoutId: string) =>
+              setSelectedTemplateWorkout(Number(selectedWorkoutId))
+            }
+            itemStyle={styles.pickerItem}>
+            <Picker.Item label="None" value="-1" />
+            {workouts.map((workout) => (
+              <Picker.Item label={`${workout.title} - ${workout.timestamp.toDateString()}`} value={workout.id.toString()} />
+            ))}
+          </Picker>
+          <ThemedText type="subtitle" style={styles.subtitle}>workout name</ThemedText>
           <TextInput
             style={styles.input}
-            placeholder="enter workout name"
             value={workoutName}
             onChangeText={setWorkoutName}
           />
-          <Button title="create" onPress={handleSave} />
+          <Button title="create" onPress={handleSave} /> 
         </ScrollView>
       </ThemedView>
     </>
@@ -51,6 +68,13 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 100,
     marginBottom: 20,
+  },
+  subtitle: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  pickerItem: {
+    color: "black"
   },
   input: {
     height: 40,
