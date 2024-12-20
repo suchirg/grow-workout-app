@@ -79,7 +79,13 @@ export const getWorkouts = async () => {
     })
     
     return workouts;
+}
 
+export const deleteWorkout = async (workoutId: string) => {
+    const db = await getDatabase();
+    return await db.runAsync(`
+        DELETE FROM workout WHERE id = ${workoutId};
+    `);
 }
 
 export const getExercises = async (workoutIdToFilterBy?: string) => {

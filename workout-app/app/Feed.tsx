@@ -7,24 +7,6 @@ import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
 import { router } from "expo-router";
 
-const workouts: WorkoutType[] = [
-  {
-    id: "1",
-    title: "pull day",
-    timestamp: new Date(),
-  },
-  {
-    id: "2",
-    title: "push day",
-    timestamp: new Date(),
-  },
-  {
-    id: "3",
-    title: "leg day",
-    timestamp: new Date(),
-  },
-];
-
 const viewWorkout = (): void => {
   router.push("/WorkoutView");
 };
@@ -45,8 +27,6 @@ export default function Feed() {
     fetchWorkouts();
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  console.log("fetched workouts", workouts);
-
   return (
     <>
     <ThemedView style={{flex: 1}}>
@@ -56,11 +36,13 @@ export default function Feed() {
             grow
           </ThemedText>
           {workouts.map((workout, idx) => (
-            <ColorfulBox key={idx} style={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10}} handlePress={viewWorkout}>
+            <ColorfulBox key={idx} style={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10, paddingRight:10 }} handlePress={viewWorkout}>
               <Workout style={styles.workout}
                 key={idx}
+                id={workout.id}
                 title={workout.title}
                 timestamp={workout.timestamp}
+                setWorkouts={setWorkouts}
               />
             </ColorfulBox>
           ))}
