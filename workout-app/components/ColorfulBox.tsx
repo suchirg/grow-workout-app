@@ -4,18 +4,19 @@ import React from "react";
 
 type ColorfulBoxProps = {
     handlePress: (event: GestureResponderEvent) => void;
-    style: StyleProp<ViewStyle>;
+    childrenStyle: StyleProp<ViewStyle>;
+    boxStyle?: StyleProp<ViewStyle>;
     children: React.ReactNode;
-}
+}   
 
-export default function ColorfulBox({ handlePress, style, children }: ColorfulBoxProps){
+export default function ColorfulBox({ handlePress, boxStyle, childrenStyle, children }: ColorfulBoxProps){
     return (
-        <ThemedView>
+        <ThemedView style={{...StyleSheet.flatten(boxStyle)}}>
             <TouchableOpacity
             onPress={handlePress}
             activeOpacity={0.8}
             >
-                <ThemedView style={ {...styles.exerciseBox, ...StyleSheet.flatten(style)} }>
+                <ThemedView style={ {...styles.exerciseBox, ...StyleSheet.flatten(childrenStyle)} }>
                     {children}
                 </ThemedView>
             </TouchableOpacity>

@@ -1,5 +1,5 @@
 import { router, Stack } from "expo-router";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Sets } from "@/components/Set";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -50,11 +50,13 @@ export default function WorkoutView() {
           <ThemedText type="title" style={styles.title}>{"pull day"}</ThemedText>
           <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
           {exercises.map((_, idx) => (
-            <ColorfulBox key={idx} style={{backgroundColor: "#ff9a85", marginBottom: 15}} handlePress={handlePress}>
-              <ThemedText style={ {paddingTop: 10, paddingLeft: 10} }>
+            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={handlePress}>
+              <ThemedText style={ {paddingTop: 8, paddingLeft: 8, paddingBottom: 8} }>
                 {exercises[idx].name}
               </ThemedText>
-              <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
+              <View style={{alignItems: 'center'}}>
+                <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
+              </View>
             </ColorfulBox>
           ))}
         </ScrollView>
@@ -76,8 +78,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     padding: 20,
   },
   title: {
