@@ -2,6 +2,7 @@ import { router, Stack } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Sets } from "@/components/Set";
 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
@@ -51,9 +52,17 @@ export default function WorkoutView() {
           <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
           {exercises.map((_, idx) => (
             <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={handlePress}>
-              <ThemedText style={ {paddingTop: 8, paddingLeft: 8, paddingBottom: 8} }>
-                {exercises[idx].name}
-              </ThemedText>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
+                <ThemedText>
+                  {exercises[idx].name}
+                </ThemedText>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <ThemedText style={{marginRight: 5}}>
+                    View progress 
+                  </ThemedText>
+                  <Icon name="angle-double-right" size={20} color="#000" />
+                </View>
+              </View>
               <View style={{alignItems: 'center'}}>
                 <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
               </View>
