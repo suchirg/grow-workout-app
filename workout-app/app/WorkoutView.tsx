@@ -61,7 +61,8 @@ export default function WorkoutView() {
               <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
             </ColorfulBox>
           </View>
-          {exercises.map((exercise, idx) => (
+          { exercises.length > 0 ? 
+          ( exercises.map((exercise, idx) => (
             <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#FFFFFF", marginBottom: 15}} handlePress={showProgress}>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
                 <View>
@@ -88,7 +89,12 @@ export default function WorkoutView() {
                 <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
               </View>
             </ColorfulBox>
-          ))}
+          ))) : (
+            <>
+              <ThemedText style={{ alignSelf: 'center', paddingTop: 50 }} type="default">no exercises yet</ThemedText>
+              <ThemedText style={{ alignSelf: 'center' }} type="default">press + to get started</ThemedText>
+            </>
+          )}
         </ScrollView>
       </ThemedView>
     </>

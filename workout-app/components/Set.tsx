@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, TouchableOpacity  } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View  } from 'react-native';
 import { ThemedText } from "./ThemedText";
 import { Exercise, putExercise } from "@/scripts/database";
 import ColorfulBox from './ColorfulBox';
@@ -47,14 +47,21 @@ export function Sets({
   const relevantExercise: Exercise = exercises[exerciseIdx];
   return (
     <>
-      {relevantExercise.reps.map((repsInCurrSet, setNumber) => (
+      { relevantExercise.reps.length > 0 ?
+       (relevantExercise.reps.map((repsInCurrSet, setNumber) => (
         <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#31c1f5", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={() => showCreateOrEditSet(relevantExercise, setNumber)}>
           <ThemedText type="subtitle" style={styles.text}>{`${repsInCurrSet} x ${relevantExercise.weights[setNumber]} lbs`}</ThemedText>
             <TouchableOpacity onPress={() => handleDelete(relevantExercise, setNumber)} style={styles.iconButton}>
               <Icon name="trash" size={15} color="#fff" />
             </TouchableOpacity>
           </ColorfulBox>
-      ))}
+        ))) : (
+          <View style={{ paddingBottom: 30 }}>
+            <ThemedText style={{ alignSelf: 'center', paddingTop: 20 }} type="default">no sets yet</ThemedText>
+            <ThemedText style={{ alignSelf: 'center' }} type="default">press + to get started</ThemedText>
+          </View>
+        )
+      }
     </>
   );
 }
