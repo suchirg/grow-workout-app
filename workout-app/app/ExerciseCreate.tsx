@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
+import { putExercise } from "@/scripts/database";
+import { useAppContext } from "@/components/WorkoutContext";
 
 const navigateToWorkoutView = () => {
     router.push("/WorkoutView");
@@ -11,10 +13,16 @@ const navigateToWorkoutView = () => {
 export default function ExerciseCreate() {
   // TODO: Add validation that exerciseName is not empty
   const [exerciseName, setExerciseName] = useState("");
+  const { currentlyViewedWorkout } = useAppContext();
 
   const handleSave = async () => {
     // Handle save logic here
-
+    await putExercise({
+      name: exerciseName,
+      reps: [],
+      weights: [],
+      workout_id: currentlyViewedWorkout.id
+    })
     navigateToWorkoutView();
   };
 

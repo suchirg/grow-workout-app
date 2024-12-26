@@ -20,18 +20,17 @@ const createExercise = () => {
 
 export default function WorkoutView() {
   const {currentlyViewedWorkout } = useAppContext();
-  let fetchedExercises: Exercise[] = [];
-
+  
   // get exercises for workout from db
   useEffect(() => {
     const fetchWorkouts = async () => {
-      fetchedExercises = await getExercises(currentlyViewedWorkout.id);
+      setExercises(await getExercises(currentlyViewedWorkout.id));
     };
 
     fetchWorkouts();
   }, []);
 
-  const [ exercises, setExercises ] = useState(fetchedExercises);
+  const [ exercises, setExercises ] = useState<Exercise[]>([]);
 
   return (
     <>

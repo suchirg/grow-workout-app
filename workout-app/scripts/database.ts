@@ -7,7 +7,7 @@ export type Exercise = {
     name: string;
     reps: number[];
     weights: number[]; // lbs
-    workout_id: number;
+    workout_id: string;
 }
 
 export type Workout = {
@@ -92,15 +92,15 @@ export const getExercises = async (workoutIdToFilterBy?: string) => {
     const db = await getDatabase();
 
     const exercises =  workoutIdToFilterBy ? await db.getAllAsync<Exercise>(`
-        SELECT * FROM exercise WHERE workout_id = ${workoutIdToFilterBy};
-    `) : await db.getAllAsync<Exercise>(`
-        SELECT * FROM exercise;
-    `)
+            SELECT * FROM exercise WHERE workout_id = ${workoutIdToFilterBy};
+        `) : await db.getAllAsync<Exercise>(`
+            SELECT * FROM exercise;
+        `)
 
-    exercises.forEach((exercise) => {
-        exercise.reps = JSON.parse(exercise.reps as unknown as string);
-        exercise.weights = JSON.parse(exercise.weights as unknown as string);
-    });
+        exercises.forEach((exercise) => {
+            exercise.reps = JSON.parse(exercise.reps as unknown as string);
+            exercise.weights = JSON.parse(exercise.weights as unknown as string);
+        });
 
     return exercises;
 }
@@ -124,22 +124,17 @@ export const putWorkout = async (workout: Omit<Workout, "id"> & {id?: string}): 
 
 export const putExercise = async (exercise: Omit<Exercise, "id"> & {id?: string}) => {
     const db = await getDatabase();
+    let res;
 
-    await db.withTransactionAsync(async () => {
-        const exerciseExists = await db.getAllAsync<Workout>(`
-            SELECT * FROM exercise WHERE id = ${exercise.id}
-        `)
-
-        if (!exercise.id){
-            db.runAsync(
-                `INSERT INTO exercise (reps, weights, workout_id) VALUES (?, ?, ?)`,
-                [JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id]
-            )
-        } else {
-            db.runAsync(
-                `UPDATE exercise SET reps = ?, weights = ?, workout_id = ? WHERE id = ?`,
-                [JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id, exercise.id]
-            )
-        }
-    })
+    if (!exercise.id){
+        res = await db.runAsync(
+            `INSERT INTO exercise (name, reps, weights, workout_id) VALUES (?, ?, ?, ?)`,
+            [exercise.name, JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id]
+        )
+    } else {
+        res = await db.runAsync(
+            `UPDATE exercise SET name = ?, reps = ?, weights = ?, workout_id = ? WHERE id = ?`,
+            [exercise.name, JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id, exercise.id]
+        )
+    }
 }
