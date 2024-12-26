@@ -28,8 +28,8 @@ export default function ExerciseCreate() {
           <TextInput
             style={styles.input}
             value={exerciseName}
-            onChangeText={setExerciseName}
-          />
+            onChangeText={(text: string) => setExerciseName(text.toLowerCase())}
+            />
           <Button title="create" onPress={handleSave} /> 
         </ScrollView>
       </ThemedView>

@@ -5,9 +5,10 @@ import { Sets, showCreateOrEditSet } from "@/components/Set";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ColorfulBox from "@/components/ColorfulBox";
-import { Exercise } from "@/scripts/database";
+import { Exercise, getExercises, Workout } from "@/scripts/database";
+import { useAppContext } from "@/components/WorkoutContext";
 
 const showProgress = () => {
   router.push("/ProgressGraph");
@@ -18,34 +19,19 @@ const createExercise = () => {
 };
 
 export default function WorkoutView() {
-  // get workout information from props (title, timestamp)
+  const {currentlyViewedWorkout } = useAppContext();
+  let fetchedExercises: Exercise[] = [];
 
   // get exercises for workout from db
-  const exercisesFromDb: Exercise[] = [
-    {
-      id: 7, 
-      name: "bench press",
-      reps: [10, 9, 10],
-      weights: [100, 105, 95],
-      workout_id: 3
-    },
-    {
-      id: 7, 
-      name: "bench press",
-      reps: [10, 9, 10],
-      weights: [100, 105, 95],
-      workout_id: 3
-    },
-    {
-      id: 7, 
-      name: "bench press",
-      reps: [10, 9, 10],
-      weights: [100, 105, 95],
-      workout_id: 3
-    },
-  ];
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      fetchedExercises = await getExercises(currentlyViewedWorkout.id);
+    };
 
-  const [ exercises, setExercises ] = useState(exercisesFromDb);
+    fetchWorkouts();
+  }, []);
+
+  const [ exercises, setExercises ] = useState(fetchedExercises);
 
   return (
     <>
@@ -54,8 +40,8 @@ export default function WorkoutView() {
         <ScrollView style={{ width: "100%" }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 100, marginBottom: 10}}>
             <View>
-              <ThemedText type="title">{"pull day"}</ThemedText>
-              <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
+              <ThemedText type="title">{currentlyViewedWorkout.title}</ThemedText>
+              <ThemedText type="subtitle" style={{ marginBottom: 10}}>{currentlyViewedWorkout.timestamp.toDateString()}</ThemedText>
             </View>
             <ColorfulBox childrenStyle={{backgroundColor: "#D3D3D3", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={createExercise}>
               <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>

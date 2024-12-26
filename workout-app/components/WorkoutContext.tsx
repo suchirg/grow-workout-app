@@ -1,33 +1,57 @@
 import { Workout } from '@/scripts/database';
 import React, { createContext, useState, useContext } from 'react';
 
-type WorkoutProviderProps = {
+type ContextProviderProps = {
     children: React.ReactNode;
 }
 
-export type WorkoutContextType = {
+export type AppContextType = {
     workouts: Workout[];
     setWorkouts: React.Dispatch<React.SetStateAction<Workout[]>>;
+    currentlyViewedWorkout: Workout;
+    setCurrentlyViewedWorkout: React.Dispatch<React.SetStateAction<Workout>>;
+    currentlyViewedExerciseId: ExerciseId;
+    setCurrentlyViewedExerciseId: React.Dispatch<React.SetStateAction<ExerciseId>>;
 }
 
-const WorkoutContext = createContext<WorkoutContextType | null>(null);
+type ExerciseId = string;
 
-export const WorkoutProvider = ({ children }: WorkoutProviderProps) => {
+// workouts state for the Feed & WorkoutCreate screens
+// currently viewed workout state (for the WorkoutView screen)
+// currently viewed exercise state (for the ProgressGraph screen)
+
+const AppContext = createContext<AppContextType | null>(null);
+
+export const AppContextProvider = ({ children }: ContextProviderProps) => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [currentlyViewedWorkout, setCurrentlyViewedWorkout] = useState<Workout>({
+    id: "",
+    title: "",
+    timestamp: new Date(),
+  });
+  const [currentlyViewedExerciseId, setCurrentlyViewedExerciseId] = useState<ExerciseId>("");
   
   return (
-    <WorkoutContext.Provider value={{ workouts, setWorkouts }}>
+    <AppContext.Provider value={{ workouts, setWorkouts, currentlyViewedWorkout, setCurrentlyViewedWorkout, currentlyViewedExerciseId, setCurrentlyViewedExerciseId }}>
       {children}
-    </WorkoutContext.Provider>
+    </AppContext.Provider>
   );
 };
 
 
-export const useWorkoutContext = (): WorkoutContextType => {
-  const context = useContext(WorkoutContext);
-  if (!context) {
-    throw new Error('useContext must be used within a WorkoutProvider');
+export const useAppContext = (): AppContextType => {
+  let context;
+  try {
+    context = useContext(AppContext);
+  } catch (err) {
+    console.log("error", err);
   }
+  // console.log("after useContext");
+  // if (!context) {
+  //   console.log("throwing error");
+  //   throw new Error('useContext must be used within a WorkoutProvider');
+  // }
 
-  return context;
+  // console.log("returning context", context);
+  return context as AppContextType;
 }

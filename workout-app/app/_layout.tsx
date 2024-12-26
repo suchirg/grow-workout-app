@@ -11,7 +11,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { WorkoutProvider } from "@/components/WorkoutContext";
+import { AppContextProvider } from "@/components/WorkoutContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,7 +34,7 @@ export default function RootLayout() {
   }
 
   return (
-    <WorkoutProvider>
+    <AppContextProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
           <Stack>
@@ -43,6 +43,6 @@ export default function RootLayout() {
           </Stack>
         </ThemeProvider>
       </GestureHandlerRootView>
-    </WorkoutProvider>
+    </AppContextProvider>
   );
 }

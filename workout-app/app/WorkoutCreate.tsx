@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
 import { putWorkout, Workout } from "@/scripts/database";
 import { Picker } from "@react-native-picker/picker";
-import { useWorkoutContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/WorkoutContext";
 
 const viewFeed = () => {
   router.push("/Feed");
@@ -42,7 +42,7 @@ export default function WorkoutCreate() {
   // TODO: Add validation that workoutName is not empty
   const [workoutName, setWorkoutName] = useState("");
   const [selectedTemplateWorkoutId, setSelectedTemplateWorkoutId] = useState(-1);
-  const { workouts } = useWorkoutContext();
+  const { workouts } = useAppContext();
 
   const handleSave = async () => {
     // Handle save logic here

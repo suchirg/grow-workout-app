@@ -3,7 +3,7 @@ import * as SQLite from 'expo-sqlite';
 let db: SQLite.SQLiteDatabase | null = null;
 
 export type Exercise = {
-    id: number;
+    id: string;
     name: string;
     reps: number[];
     weights: number[]; // lbs

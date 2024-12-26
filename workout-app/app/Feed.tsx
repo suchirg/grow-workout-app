@@ -3,12 +3,14 @@ import { ThemedText } from "@/components/ThemedText";
 import { ScrollView, StyleSheet } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useEffect } from "react";
-import { getWorkouts } from "@/scripts/database";
+import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
 import { router } from "expo-router";
-import { useWorkoutContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/WorkoutContext";
+import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 
-const viewWorkout = (): void => {
+const viewWorkout = async (workout: WorkoutType, setCurrentlyViewedWorkout: React.Dispatch<React.SetStateAction<WorkoutType>>) => {
+  setCurrentlyViewedWorkout(workout);
   router.push("/WorkoutView");
 };
 
@@ -17,7 +19,7 @@ const createWorkout = (): void => {
 };
 
 export default function Feed() {
-  const { workouts, setWorkouts } = useWorkoutContext();
+  const { workouts, setWorkouts, setCurrentlyViewedWorkout } = useAppContext();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -37,7 +39,7 @@ export default function Feed() {
             grow
           </ThemedText>
           {workouts.map((workout, idx) => (
-            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10, paddingRight:10 }} handlePress={viewWorkout}>
+            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#fcf45d", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10, paddingRight:10 }} handlePress={() => {viewWorkout(workout, setCurrentlyViewedWorkout)}}>
               <Workout style={styles.workout}
                 key={idx}
                 id={workout.id}
