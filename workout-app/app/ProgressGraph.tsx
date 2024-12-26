@@ -6,7 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 
 import * as shape from 'd3-shape';
 
-import * as Haptics from 'expo-haptics';
+import * as haptics from 'expo-haptics';
 import { useState } from "react";
 import React from "react";
 
@@ -31,6 +31,9 @@ const data = [
   },
 ];
 
+function invokeHaptic() {
+    haptics.impactAsync(haptics.ImpactFeedbackStyle.Heavy);
+  }
 
 // orm = "one rep max"
 type ormChartData = {
@@ -95,9 +98,32 @@ export default function WorkoutView() {
                     <ThemedText type="title" style={styles.title}>{dataFromApi.exercise_name}</ThemedText>
                     <ThemedText type="subtitle" style={styles.title}>{currOrm}</ThemedText>
                     <LineChart.Provider data={data}>
-                        <LineChart width={300} height={500} shape={shape.curveLinear}>
-                            <LineChart.Path />
+                        <LineChart shape={shape.curveLinear}>
+                            <LineChart.Path color="black">
+                                <LineChart.Gradient />
+                            </LineChart.Path>
+                            <LineChart.CursorCrosshair onActivated={invokeHaptic} onEnded={invokeHaptic}>
+                                <LineChart.Tooltip 
+                                    textStyle={{
+                                        backgroundColor: 'black',
+                                        borderRadius: 4,
+                                        color: 'white',
+                                        fontSize: 18,
+                                        padding: 4,
+                                    }}
+                                />
+                            </LineChart.CursorCrosshair>
+                            <LineChart.CursorLine />
                         </LineChart>
+                        <LineChart.DatetimeText 
+                            locale="en-US"
+                            options={{
+                                month: "short",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric"
+                            }}
+                        />
                     </LineChart.Provider>
                 </ThemedView>
         </>
