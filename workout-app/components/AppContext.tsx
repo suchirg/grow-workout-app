@@ -10,8 +10,6 @@ export type AppContextType = {
     setWorkouts: React.Dispatch<React.SetStateAction<Workout[]>>;
     currentlyViewedWorkout: Workout;
     setCurrentlyViewedWorkout: React.Dispatch<React.SetStateAction<Workout>>;
-    currentlyViewedExerciseId: ExerciseId;
-    setCurrentlyViewedExerciseId: React.Dispatch<React.SetStateAction<ExerciseId>>;
 }
 
 type ExerciseId = string;
@@ -29,10 +27,9 @@ export const AppContextProvider = ({ children }: ContextProviderProps) => {
     title: "",
     timestamp: new Date(),
   });
-  const [currentlyViewedExerciseId, setCurrentlyViewedExerciseId] = useState<ExerciseId>("");
   
   return (
-    <AppContext.Provider value={{ workouts, setWorkouts, currentlyViewedWorkout, setCurrentlyViewedWorkout, currentlyViewedExerciseId, setCurrentlyViewedExerciseId }}>
+    <AppContext.Provider value={{ workouts, setWorkouts, currentlyViewedWorkout, setCurrentlyViewedWorkout }}>
       {children}
     </AppContext.Provider>
   );
