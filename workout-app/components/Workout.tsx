@@ -16,12 +16,12 @@ type WorkoutProps = {
 };
 
 const handleDelete = async (workoutId: string, setWorkouts: React.Dispatch<React.SetStateAction<any>>) => {
-  Alert.alert('Delete Workout?', 'This action is not reversible.', [
+  Alert.alert('delete workout?', 'this action is not reversible', [
     {
-      text: 'Cancel',
+      text: 'cancel',
       style: 'cancel',
     },
-    {text: 'Delete', style: 'destructive', onPress: async () => {
+    {text: 'delete', style: 'destructive', onPress: async () => {
       await deleteWorkout(workoutId);
       setWorkouts((prev: WorkoutType[]) => prev.filter((workout: WorkoutType) => workout.id !== workoutId));
     }},

@@ -1,6 +1,6 @@
 import { router, Stack } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Sets } from "@/components/Set";
+import { Sets, showCreateOrEditSet } from "@/components/Set";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ThemedText } from "@/components/ThemedText";
@@ -11,10 +11,6 @@ import { Exercise } from "@/scripts/database";
 
 const showProgress = () => {
   router.push("/ProgressGraph");
-};
-
-export const showCreateOrEditSet = () => {
-  router.push("/CreateOrEditSet");
 };
 
 const createExercise = () => {
@@ -69,11 +65,11 @@ export default function WorkoutView() {
             <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={showProgress}>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
                 <View>
-                  <ThemedText style={{fontSize: 22}}>
+                  <ThemedText style={{fontSize: 26}}>
                     {exercises[idx].name}
                   </ThemedText>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <ThemedText style={{marginRight: 5, fontSize: 14}}>
+                    <ThemedText style={{marginRight: 5, fontSize: 16}}>
                       view progress 
                     </ThemedText>
                     <Icon name="angle-double-right" size={20} color="#000" />

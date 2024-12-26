@@ -65,7 +65,7 @@ export default function WorkoutCreate() {
           <TextInput
             style={styles.input}
             value={workoutName}
-            onChangeText={setWorkoutName}
+            onChangeText={(text: string) => setWorkoutName(text.toLowerCase())}
           />
           <Button title="create" onPress={handleSave} /> 
         </ScrollView>
