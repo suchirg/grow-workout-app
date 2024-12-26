@@ -4,6 +4,8 @@ import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
+import * as shape from 'd3-shape';
+
 import * as Haptics from 'expo-haptics';
 import { useState } from "react";
 import React from "react";
@@ -17,7 +19,7 @@ const data = [
   },
   {
     timestamp: 1625946300000,
-    value: 33545.25,
+    value: 33600.25,
   },
   {
     timestamp: 1625947200000,
@@ -25,7 +27,7 @@ const data = [
   },
   {
     timestamp: 1625948100000,
-    value: 33215.25,
+    value: 33600.25,
   },
 ];
 
@@ -93,7 +95,7 @@ export default function WorkoutView() {
                     <ThemedText type="title" style={styles.title}>{dataFromApi.exercise_name}</ThemedText>
                     <ThemedText type="subtitle" style={styles.title}>{currOrm}</ThemedText>
                     <LineChart.Provider data={data}>
-                        <LineChart width={300} height={500}>
+                        <LineChart width={300} height={500} shape={shape.curveLinear}>
                             <LineChart.Path />
                         </LineChart>
                     </LineChart.Provider>
