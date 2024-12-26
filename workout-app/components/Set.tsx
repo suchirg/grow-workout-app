@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, TouchableOpacity  } from 'react-native';
 import { ThemedText } from "./ThemedText";
-import { Exercise } from "@/scripts/database";
+import { Exercise, putExercise } from "@/scripts/database";
 import ColorfulBox from './ColorfulBox';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,7 +8,6 @@ import { router } from 'expo-router';
 
 // if the user is creating a set, setNumber is -1, otherwise it's the index of the set in the exercise
 export const showCreateOrEditSet = (exercise: Exercise, setNumber: number) => {
-  console.log('exercise', exercise);
   router.push(`/CreateOrEditSet?exercise=${JSON.stringify(exercise)}&setNumber=${setNumber}`);
 };
 
@@ -23,30 +22,35 @@ enum WorkoutMetrics {
   WEIGHTS = "weights",
 }
 
-const handleDelete = async () => {
-  Alert.alert('delete set?', 'this action is not reversible', [
-    {
-      text: 'cancel',
-      style: 'cancel',
-    },
-    {text: 'delete', style: 'destructive', onPress: async () => {
-      // delete set in db and update state
-    }},
-  ]);
-}
-
 export function Sets({
   exercises,
   exerciseIdx,
   setExercises
 }: SetProps) {
+  const handleDelete = async (exercise: Exercise, setNumberBeingDeleted: number) => {
+    Alert.alert('delete set?', 'this action is not reversible', [
+      {
+        text: 'cancel',
+        style: 'cancel',
+      },
+      {text: 'delete', style: 'destructive', onPress: async () => {
+        const newExercise = { ...exercise, reps: exercise.reps.filter((_, idx) => idx !== setNumberBeingDeleted), weights: exercise.weights.filter((_, idx) => idx !== setNumberBeingDeleted) };
+        putExercise(newExercise);
+        
+        const newExercises = [...exercises];
+        newExercises[exerciseIdx] = newExercise;
+        setExercises(newExercises);
+      }},
+    ]);
+  }
+  
   const relevantExercise: Exercise = exercises[exerciseIdx];
   return (
     <>
       {relevantExercise.reps.map((repsInCurrSet, setNumber) => (
         <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#fc8383", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={() => showCreateOrEditSet(relevantExercise, setNumber)}>
           <ThemedText style={styles.text}>{`${repsInCurrSet} x ${relevantExercise.weights[setNumber]} lbs`}</ThemedText>
-            <TouchableOpacity onPress={() => handleDelete()} style={styles.iconButton}>
+            <TouchableOpacity onPress={() => handleDelete(relevantExercise, setNumber)} style={styles.iconButton}>
               <Icon name="trash" size={15} color="#fff" />
             </TouchableOpacity>
           </ColorfulBox>
