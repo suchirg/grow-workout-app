@@ -48,7 +48,7 @@ export function Sets({
   return (
     <>
       {relevantExercise.reps.map((repsInCurrSet, setNumber) => (
-        <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#fc8383", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={() => showCreateOrEditSet(relevantExercise, setNumber)}>
+        <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#31c1f5", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={() => showCreateOrEditSet(relevantExercise, setNumber)}>
           <ThemedText style={styles.text}>{`${repsInCurrSet} x ${relevantExercise.weights[setNumber]} lbs`}</ThemedText>
             <TouchableOpacity onPress={() => handleDelete(relevantExercise, setNumber)} style={styles.iconButton}>
               <Icon name="trash" size={15} color="#fff" />

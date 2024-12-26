@@ -76,7 +76,7 @@ export default function WorkoutView() {
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-                  <ColorfulBox childrenStyle={{backgroundColor: "#fc8383", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={() => showCreateOrEditSet(exercise, -1)}>
+                  <ColorfulBox childrenStyle={{backgroundColor: "#31c1f5", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={() => showCreateOrEditSet(exercise, -1)}>
                     <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
                   </ColorfulBox>
                   <ColorfulBox childrenStyle={{backgroundColor: "#595959", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={() => {handleDelete(exercise.id)}}>
