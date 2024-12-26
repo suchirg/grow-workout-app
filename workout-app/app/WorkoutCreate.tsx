@@ -1,5 +1,5 @@
 import { router, Stack } from "expo-router";
-import { ScrollView, StyleSheet, TextInput, Button, Alert } from "react-native";
+import { ScrollView, StyleSheet, TextInput, Button, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
@@ -45,23 +45,25 @@ export default function WorkoutCreate() {
   const { workouts } = useAppContext();
 
   const handleSave = async () => {
-    // Handle save logic here
     await putWorkout({
       title: workoutName,
       timestamp: new Date(),
     })
-    // Navigate to Feed after saving
     viewFeed();
   };
 
   return (
     <>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
       <Stack.Screen options={{ title: "create workout", headerShown: false }} />
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>create workout</ThemedText>
           { workouts.length > 0 ? TemplateWorkoutPicker(selectedTemplateWorkoutId, setSelectedTemplateWorkoutId, setWorkoutName, workouts) : null }
-          <ThemedText type="subtitle" style={styles.subtitle}>workout name</ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>name</ThemedText>
           <TextInput
             style={styles.input}
             value={workoutName}
@@ -70,6 +72,7 @@ export default function WorkoutCreate() {
           <Button title="create" onPress={handleSave} /> 
         </ScrollView>
       </ThemedView>
+      </KeyboardAvoidingView>
     </>
   );
 }

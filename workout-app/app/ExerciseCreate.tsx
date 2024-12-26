@@ -32,7 +32,7 @@ export default function ExerciseCreate() {
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
           <ThemedText type="title" style={styles.title}>create exercise</ThemedText>
-          <ThemedText type="subtitle" style={styles.subtitle}>exercise name</ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>name</ThemedText>
           <TextInput
             style={styles.input}
             value={exerciseName}
