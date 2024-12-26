@@ -46,11 +46,11 @@ export function Workout({
       <View style={styles.heading}>
         <View>
           <ThemedText type="subtitle">{title}</ThemedText>
-          <ThemedText>{timestamp.toDateString()}</ThemedText>
+          <ThemedText type="default">{timestamp.toDateString()}</ThemedText>
         </View>
         <View>
           <TouchableOpacity onPress={() => handleDelete(id, setWorkouts)} style={styles.iconButton}>
-            <Icon name="trash" size={20} color="#fff" />
+            <Icon name="trash" size={15} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -64,20 +64,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-  },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
   },
   iconButton: {
-    padding: 10,
+    padding: 12,
     backgroundColor: '#595959',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 3,
+    borderWidth: 5,
     borderColor: '#000',
   },
 });

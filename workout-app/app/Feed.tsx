@@ -1,6 +1,6 @@
 import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useEffect } from "react";
 import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
@@ -35,23 +35,34 @@ export default function Feed() {
     <ThemedView style={{flex: 1}}>
       <ScrollView contentContainerStyle={{alignItems:'center'}}>
         <ThemedView style={{paddingTop:100, width:"80%"}}>
-          <ThemedText type="title">
-            grow
-          </ThemedText>
-          {workouts.map((workout, idx) => (
-            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#31c1f5", marginTop: 15, paddingLeft:10, paddingTop: 10, paddingBottom: 10, paddingRight:10 }} handlePress={() => {viewWorkout(workout, setCurrentlyViewedWorkout)}}>
-              <Workout style={styles.workout}
-                key={idx}
-                id={workout.id}
-                title={workout.title}
-                timestamp={workout.timestamp}
-                setWorkouts={setWorkouts}
-              />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <ThemedText type="title">
+              grow
+            </ThemedText>
+            <ColorfulBox childrenStyle={{ backgroundColor: "#c7e7f2", alignItems: 'center', justifyContent: 'center', height: 50, width: 50 }} handlePress={createWorkout}>
+              <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
             </ColorfulBox>
-          ))}
-          <ColorfulBox childrenStyle={{ backgroundColor: "#31c1f5", marginTop: 15, paddingBottom:10, paddingTop:10 }} handlePress={createWorkout}>
-            <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
-          </ColorfulBox>
+          </View>
+
+          { workouts.length > 0 ? 
+            workouts.map((workout, idx) => (
+              <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#31c1f5", marginTop: 15, padding:10 }} handlePress={() => {viewWorkout(workout, setCurrentlyViewedWorkout)}}>
+                <Workout style={styles.workout}
+                  key={idx}
+                  id={workout.id}
+                  title={workout.title}
+                  timestamp={workout.timestamp}
+                  setWorkouts={setWorkouts}
+                />
+              </ColorfulBox>
+            )) : (
+              <>
+                <ThemedText style={{ alignSelf: 'center', paddingTop: 50 }} type="default">no workouts yet</ThemedText>
+                <ThemedText style={{ alignSelf: 'center' }} type="default">press + to get started</ThemedText>
+              </>
+            )
+          }
+
         </ThemedView>
       </ScrollView>
     </ThemedView>

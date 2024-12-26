@@ -55,24 +55,24 @@ export default function WorkoutView() {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 100, marginBottom: 10}}>
             <View>
               <ThemedText type="title">{currentlyViewedWorkout.title}</ThemedText>
-              <ThemedText type="subtitle" style={{ marginBottom: 10}}>{currentlyViewedWorkout.timestamp.toDateString()}</ThemedText>
+              <ThemedText type="subtitle" style={{ marginBottom: 10 }}>{currentlyViewedWorkout.timestamp.toDateString()}</ThemedText>
             </View>
-            <ColorfulBox childrenStyle={{backgroundColor: "#D3D3D3", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={createExercise}>
+            <ColorfulBox childrenStyle={{backgroundColor: "#c7e7f2", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={createExercise}>
               <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
             </ColorfulBox>
           </View>
           {exercises.map((exercise, idx) => (
-            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={showProgress}>
+            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#FFFFFF", marginBottom: 15}} handlePress={showProgress}>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
                 <View>
-                  <ThemedText style={{fontSize: 26}}>
+                  <ThemedText type="subtitle">
                     {exercises[idx].name}
                   </ThemedText>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <ThemedText style={{marginRight: 5, fontSize: 16}}>
+                    <ThemedText style={{marginRight: 5}}>
                       view progress 
                     </ThemedText>
-                    <Icon name="angle-double-right" size={20} color="#000" />
+                    <Icon name="angle-double-right" size={16} color="#000" />
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>

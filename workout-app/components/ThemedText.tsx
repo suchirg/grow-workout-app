@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontFamily: "Barlow",
   },
   subtitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     fontFamily: "Barlow",
   },

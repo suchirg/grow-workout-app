@@ -54,7 +54,7 @@ export default function WorkoutView() {
             <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
                 <ThemedView style={{ flex: 1, justifyContent: 'center' }}>
                     <ThemedText type="title" style={styles.exerciseName}>{"bicep curls"}</ThemedText>
-                    <ThemedText type="title" style={styles.subtitle}>{"one rep max progress"}</ThemedText>
+                    <ThemedText type="subtitle" style={styles.subtitle}>{"one rep max progress"}</ThemedText>
                     <ColorfulBox childrenStyle={{backgroundColor: "#FFFFFF"}} boxStyle={{alignSelf: 'center'}} handlePress={() => {}}>                   
                         <LineChart.Provider data={data}>
                             <LineChart shape={shape.curveLinear} width={Dimensions.get('window').width * 0.9} height={Dimensions.get('window').height * 0.65}>
@@ -86,11 +86,9 @@ export default function WorkoutView() {
 const styles = StyleSheet.create({
     exerciseName: {
         marginLeft: 20,
-        fontSize: 34
     },
     subtitle: {
         marginLeft: 20,
         marginBottom: 10,
-        fontSize: 22
     },
 });
