@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ThemedText";
 import React from "react";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { deleteWorkout } from "@/scripts/database";
+import { deleteExercise, deleteWorkout, getExercises } from "@/scripts/database";
 import { Workout as WorkoutType } from "@/scripts/database";
 
 
@@ -22,7 +22,12 @@ const handleDelete = async (workoutId: string, setWorkouts: React.Dispatch<React
       style: 'cancel',
     },
     {text: 'delete', style: 'destructive', onPress: async () => {
+      const exercisesInDeletedWorkout = await getExercises(workoutId);
+      exercisesInDeletedWorkout.forEach(async (exercise) => {
+        await deleteExercise(exercise.id);
+      }); 
       await deleteWorkout(workoutId);
+      
       setWorkouts((prev: WorkoutType[]) => prev.filter((workout: WorkoutType) => workout.id !== workoutId));
     }},
   ]);
