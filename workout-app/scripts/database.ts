@@ -122,6 +122,13 @@ export const putWorkout = async (workout: Omit<Workout, "id"> & {id?: string}): 
     return res;
 }
 
+export const deleteExercise = async (exerciseId: string) => {
+    const db = await getDatabase();
+    return await db.runAsync(`
+        DELETE FROM exercise WHERE id = ${exerciseId};
+    `);
+}
+
 export const putExercise = async (exercise: Omit<Exercise, "id"> & {id?: string}) => {
     const db = await getDatabase();
     let res;

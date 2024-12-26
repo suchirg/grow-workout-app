@@ -1,5 +1,5 @@
 import { router, Stack } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Sets, showCreateOrEditSet } from "@/components/Set";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,7 +7,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useEffect, useState } from "react";
 import ColorfulBox from "@/components/ColorfulBox";
-import { Exercise, getExercises, Workout } from "@/scripts/database";
+import { deleteExercise, Exercise, getExercises, Workout } from "@/scripts/database";
 import { useAppContext } from "@/components/WorkoutContext";
 
 const showProgress = () => {
@@ -17,6 +17,7 @@ const showProgress = () => {
 const createExercise = () => {
   router.push("/ExerciseCreate");
 };
+
 
 export default function WorkoutView() {
   const {currentlyViewedWorkout } = useAppContext();
@@ -32,6 +33,20 @@ export default function WorkoutView() {
 
   const [ exercises, setExercises ] = useState<Exercise[]>([]);
 
+  const handleDelete = async (exerciseId: string) => {
+    Alert.alert('delete exercise?', 'this action is not reversible', [
+      {
+        text: 'cancel',
+        style: 'cancel',
+      },
+      {text: 'delete', style: 'destructive', onPress: async () => {
+        await deleteExercise(exerciseId);
+        setExercises((prev: Exercise[]) => prev.filter((workout: Exercise) => workout.id !== exerciseId));
+      }},
+    ]);
+  }
+  
+
   return (
     <>
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
@@ -46,7 +61,7 @@ export default function WorkoutView() {
               <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
             </ColorfulBox>
           </View>
-          {exercises.map((_, idx) => (
+          {exercises.map((exercise, idx) => (
             <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={showProgress}>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
                 <View>
@@ -60,9 +75,14 @@ export default function WorkoutView() {
                     <Icon name="angle-double-right" size={20} color="#000" />
                   </View>
                 </View>
-                <ColorfulBox childrenStyle={{backgroundColor: "#fc8383", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={showCreateOrEditSet}>
-                  <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
-                </ColorfulBox>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <ColorfulBox childrenStyle={{backgroundColor: "#fc8383", alignItems: 'center', justifyContent: 'center', height: 50, width: 50, marginRight: 5}} handlePress={showCreateOrEditSet}>
+                    <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
+                  </ColorfulBox>
+                  <ColorfulBox childrenStyle={{backgroundColor: "#595959", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={() => {handleDelete(exercise.id)}}>
+                    <Icon name="trash" size={15} color="#fff" />
+                  </ColorfulBox>
+                </View>
               </View>
               <View style={{alignItems: 'center'}}>
                 <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
@@ -93,5 +113,13 @@ const styles = StyleSheet.create({
   link: {
     marginTop: 15,
     paddingVertical: 15,
+  },
+  iconButton: {
+    padding: 10,
+    backgroundColor: '#595959',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: '#000',
   },
 });
