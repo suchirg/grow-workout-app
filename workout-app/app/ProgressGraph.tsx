@@ -4,11 +4,31 @@ import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
-import { LineGraph } from "react-native-graph";
-
 import * as Haptics from 'expo-haptics';
 import { useState } from "react";
 import React from "react";
+
+import { LineChart } from 'react-native-wagmi-charts';
+
+const data = [
+  {
+    timestamp: 1625945400000,
+    value: 33575.25,
+  },
+  {
+    timestamp: 1625946300000,
+    value: 33545.25,
+  },
+  {
+    timestamp: 1625947200000,
+    value: 33510.25,
+  },
+  {
+    timestamp: 1625948100000,
+    value: 33215.25,
+  },
+];
+
 
 // orm = "one rep max"
 type ormChartData = {
@@ -72,27 +92,17 @@ export default function WorkoutView() {
                 <ThemedView style={styles.container}>
                     <ThemedText type="title" style={styles.title}>{dataFromApi.exercise_name}</ThemedText>
                     <ThemedText type="subtitle" style={styles.title}>{currOrm}</ThemedText>
-                    <LineGraph
-                        style={styles.graph}
-                        animated={true}
-                        enablePanGesture={true}
-                        color={graphColor}
-                        points={DATA}
-                        onGestureStart={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-                        onPointSelected={(o) => updateCurrOrm(o)}
-                        onGestureEnd={() => resetCurrOrm()}
-                        panGestureDelay={0}
-                    />
+                    <LineChart.Provider data={data}>
+                        <LineChart width={300} height={500}>
+                            <LineChart.Path />
+                        </LineChart>
+                    </LineChart.Provider>
                 </ThemedView>
         </>
     );
 }
 
 const styles = StyleSheet.create({
-    graph: {
-        width: 300,
-        height: 500,
-    },
     container: {
         flex: 1,
         padding: 20,
