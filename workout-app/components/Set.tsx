@@ -6,8 +6,10 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { router } from 'expo-router';
 
-export const showCreateOrEditSet = () => {
-  router.push("/CreateOrEditSet");
+// if the user is creating a set, setNumber is -1, otherwise it's the index of the set in the exercise
+export const showCreateOrEditSet = (exercise: Exercise, setNumber: number) => {
+  console.log('exercise', exercise);
+  router.push(`/CreateOrEditSet?exercise=${JSON.stringify(exercise)}&setNumber=${setNumber}`);
 };
 
 type SetProps = {
@@ -42,12 +44,12 @@ export function Sets({
   return (
     <>
       {relevantExercise.reps.map((repsInCurrSet, setNumber) => (
-        <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#fc8383", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={showCreateOrEditSet}>
+        <ColorfulBox key={setNumber} childrenStyle={{ flexDirection:'row', backgroundColor: "#fc8383", justifyContent: 'space-between', alignItems: 'center', padding: 4}} boxStyle={{marginBottom: 8, width:'95%'}} handlePress={() => showCreateOrEditSet(relevantExercise, setNumber)}>
           <ThemedText style={styles.text}>{`${repsInCurrSet} x ${relevantExercise.weights[setNumber]} lbs`}</ThemedText>
-          <TouchableOpacity onPress={() => handleDelete()} style={styles.iconButton}>
-            <Icon name="trash" size={15} color="#fff" />
-          </TouchableOpacity>
-        </ColorfulBox>
+            <TouchableOpacity onPress={() => handleDelete()} style={styles.iconButton}>
+              <Icon name="trash" size={15} color="#fff" />
+            </TouchableOpacity>
+          </ColorfulBox>
       ))}
     </>
   );
