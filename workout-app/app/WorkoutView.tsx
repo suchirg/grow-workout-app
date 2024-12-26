@@ -9,8 +9,16 @@ import React, { useState } from "react";
 import ColorfulBox from "@/components/ColorfulBox";
 import { Exercise } from "@/scripts/database";
 
-const handlePress = () => {
+const showProgress = () => {
   router.push("/ProgressGraph");
+};
+
+export const showCreateOrEditSet = () => {
+  router.push("/CreateOrEditSet");
+};
+
+const createExercise = () => {
+  router.push("/ExerciseCreate");
 };
 
 export default function WorkoutView() {
@@ -48,20 +56,32 @@ export default function WorkoutView() {
       <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
       <ThemedView style={styles.container}>
         <ScrollView style={{ width: "100%" }}>
-          <ThemedText type="title" style={styles.title}>{"pull day"}</ThemedText>
-          <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 100, marginBottom: 10}}>
+            <View>
+              <ThemedText type="title">{"pull day"}</ThemedText>
+              <ThemedText type="subtitle" style={{ marginBottom: 10}}>{(new Date()).toDateString()}</ThemedText>
+            </View>
+            <ColorfulBox childrenStyle={{backgroundColor: "#D3D3D3", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={createExercise}>
+              <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
+            </ColorfulBox>
+          </View>
           {exercises.map((_, idx) => (
-            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={handlePress}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 8}}>
-                <ThemedText>
-                  {exercises[idx].name}
-                </ThemedText>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <ThemedText style={{marginRight: 5}}>
-                    View progress 
+            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#D3D3D3", marginBottom: 15}} handlePress={showProgress}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
+                <View>
+                  <ThemedText style={{fontSize: 22}}>
+                    {exercises[idx].name}
                   </ThemedText>
-                  <Icon name="angle-double-right" size={20} color="#000" />
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <ThemedText style={{marginRight: 5, fontSize: 14}}>
+                      view progress 
+                    </ThemedText>
+                    <Icon name="angle-double-right" size={20} color="#000" />
+                  </View>
                 </View>
+                <ColorfulBox childrenStyle={{backgroundColor: "#fc8383", alignItems: 'center', justifyContent: 'center', height: 50, width: 50}} handlePress={showCreateOrEditSet}>
+                  <ThemedText style={{textAlign: 'center'}} type={'title'}>+</ThemedText>
+                </ColorfulBox>
               </View>
               <View style={{alignItems: 'center'}}>
                 <Sets exercises={exercises} exerciseIdx={idx} setExercises={setExercises}/>
@@ -88,9 +108,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-  },
-  title: {
-    marginTop: 100,
   },
   link: {
     marginTop: 15,
