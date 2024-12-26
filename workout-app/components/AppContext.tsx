@@ -40,18 +40,9 @@ export const AppContextProvider = ({ children }: ContextProviderProps) => {
 
 
 export const useAppContext = (): AppContextType => {
-  let context;
-  try {
-    context = useContext(AppContext);
-  } catch (err) {
-    console.log("error", err);
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within a AppContextProvider");
   }
-  // console.log("after useContext");
-  // if (!context) {
-  //   console.log("throwing error");
-  //   throw new Error('useContext must be used within a WorkoutProvider');
-  // }
-
-  // console.log("returning context", context);
-  return context as AppContextType;
+  return context;
 }
