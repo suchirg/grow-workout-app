@@ -2,7 +2,7 @@ import { router, Stack } from "expo-router";
 import { ScrollView, StyleSheet, View, Button } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 
 const navigateToWorkoutView = () => {

@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
 import { putExercise } from "@/scripts/database";
-import { useAppContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/AppContext";
 
 const navigateToWorkoutView = () => {
     router.push("/WorkoutView");

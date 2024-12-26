@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
 import { putWorkout, Workout } from "@/scripts/database";
 import { Picker } from "@react-native-picker/picker";
-import { useAppContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/AppContext";
 
 const viewFeed = () => {
   router.push("/Feed");

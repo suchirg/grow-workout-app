@@ -8,7 +8,7 @@ import { ThemedView } from "@/components/ThemedView";
 import React, { useEffect, useState } from "react";
 import ColorfulBox from "@/components/ColorfulBox";
 import { deleteExercise, Exercise, getExercises, Workout } from "@/scripts/database";
-import { useAppContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/AppContext";
 
 const showProgress = () => {
   router.push("/ProgressGraph");

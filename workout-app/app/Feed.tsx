@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
 import { router } from "expo-router";
-import { useAppContext } from "@/components/WorkoutContext";
+import { useAppContext } from "@/components/AppContext";
 import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 
 const viewWorkout = async (workout: WorkoutType, setCurrentlyViewedWorkout: React.Dispatch<React.SetStateAction<WorkoutType>>) => {
