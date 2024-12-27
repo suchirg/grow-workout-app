@@ -10,8 +10,8 @@ import ColorfulBox from "@/components/ColorfulBox";
 import { deleteExercise, Exercise, getExercises, Workout } from "@/scripts/database";
 import { useAppContext } from "@/components/AppContext";
 
-const showProgress = () => {
-  router.push("/ProgressGraph");
+const showProgress = (exerciseName: string) => {
+  router.push(`/ProgressGraph?exerciseName=${exerciseName}`);
 };
 
 const createExercise = () => {
@@ -63,7 +63,9 @@ export default function WorkoutView() {
           </View>
           { exercises.length > 0 ? 
           ( exercises.map((exercise, idx) => (
-            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#FFFFFF", marginBottom: 15}} handlePress={showProgress}>
+            <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#FFFFFF", marginBottom: 15}} handlePress={() => {
+              showProgress(exercise.name)
+            }}>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 8}}>
                 <View>
                   <ThemedText type="subtitle">

@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { Dimensions, StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -7,76 +7,118 @@ import { ThemedView } from "@/components/ThemedView";
 import * as shape from 'd3-shape';
 
 import * as haptics from 'expo-haptics';
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { LineChart } from 'react-native-wagmi-charts';
 import ColorfulBox from "@/components/ColorfulBox";
+import { Exercise, getExercises } from "@/scripts/database";
 
-const data = [
-  {
-    timestamp: 1625945400000,
-    value: 250,
-  },
-  {
-    timestamp: 1625946300000,
-    value: 255,
-  },
-  {
-    timestamp: 1625947200000,
-    value: 260,
-  },
-  {
-    timestamp: 1625948100000,
-    value: 262,
-  },
-];
 
 function invokeHaptic() {
     haptics.impactAsync(haptics.ImpactFeedbackStyle.Light);
-}
+};
 
-// orm = "one rep max"
-type ormChartData = {
-    id: string;
-    exercise_name: string;
-    fields: string[];
-    values: number[][];
-}
 
 type DataPoint = {
-    date: Date;
-    value: number;
+    timestamp: number;
+    value: number; // one rep max value
 }
 
-export default function WorkoutView() {    
+export default function ProgressGraph() {
+    const { exerciseName } = useLocalSearchParams();
+    const [ ormData, setOrmData ] = useState<DataPoint[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchExercises = async () => {
+            const ormData: DataPoint[] = [];
+            const exercises: Exercise[] = await getExercises();
+
+            const twelveWeeksAgo = new Date(Date.now() - 12 * 7 * 24 * 60 * 60 * 1000);
+
+            // TODO: fix daylight savings time issue in calcaulating buckets
+            const buckets = Array.from({ length: 12 }, (_, i) => {
+                const start = new Date(twelveWeeksAgo);
+                start.setDate(start.getDate() + 7 * i);
+                const end = new Date(start);
+                end.setDate(end.getDate() + 7);
+                return { start, end };
+            });
+
+            exercises.filter(exercise => exercise.name === exerciseName && exercise.created_at >=  new Date(Date.now() - 12 * 7 * 24 * 60 * 60 * 1000));
+            
+            let exercisesGroupedByWeek: Record<string, Exercise[]> = {};
+
+            buckets.forEach(({ start }) => {
+                exercisesGroupedByWeek[start.getTime()] = [];
+            });
+            exercises.forEach((currentExercise) => {
+                const { created_at: createdAt } = currentExercise;
+                const weekBucketStartTime = (buckets.find(({ start, end }) => createdAt >= start && createdAt < end) as { start: Date, end: Date }).start.getTime();
+                exercisesGroupedByWeek[weekBucketStartTime].push(currentExercise);
+            });
+
+            Object.entries(exercisesGroupedByWeek).forEach(([weekStartTime, exercises]) => {
+                let thisWeeks1RM = 0;
+                exercises.forEach((exercise) => {
+                    exercise.reps.forEach((repsForCurrSet, idx) => {
+                        const weightForCurrSet = exercise.weights[idx]; 
+                        const thisSets1RM = weightForCurrSet / (1.0278 - 0.0278 * repsForCurrSet);
+                        thisWeeks1RM = Math.max(thisWeeks1RM, thisSets1RM);
+                    });
+                });
+
+                ormData.push({
+                    timestamp: Number(weekStartTime),
+                    value: thisWeeks1RM,
+                });
+            });
+
+            setOrmData(ormData);
+            setLoading(false);
+        }
+
+        fetchExercises();
+    }, [exerciseName]);
+
+    if (loading) {
+        return (
+            <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ThemedText type="title">Loading...</ThemedText>
+            </ThemedView>
+        );
+    }
+
     return (
         <>
             <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
                 <ThemedView style={{ flex: 1, justifyContent: 'center' }}>
-                    <ThemedText type="title" style={styles.exerciseName}>{"bicep curls"}</ThemedText>
+                    <ThemedText type="title" style={styles.exerciseName}>{exerciseName}</ThemedText>
                     <ThemedText type="subtitle" style={styles.subtitle}>{"one rep max progress"}</ThemedText>
                     <ColorfulBox childrenStyle={{backgroundColor: "#FFFFFF"}} boxStyle={{alignSelf: 'center'}} handlePress={() => {}}>                   
-                        <LineChart.Provider data={data}>
+                        {ormData.length > 0 && (
+                            <LineChart.Provider data={ormData}>
                             <LineChart shape={shape.curveLinear} width={Dimensions.get('window').width * 0.9} height={Dimensions.get('window').height * 0.65}>
                                 <LineChart.Path color="#31c1f5">
-                                    <LineChart.Gradient />
+                                <LineChart.Gradient />
                                 </LineChart.Path>
-                                <LineChart.CursorCrosshair 
-                                    onActivated={invokeHaptic}
-                                    onEnded={invokeHaptic}
-                                    snapToPoint={true}
+                                <LineChart.CursorCrosshair
+                                onActivated={invokeHaptic}
+                                onEnded={invokeHaptic}
+                                snapToPoint={true}
                                 >
-                                    <LineChart.Tooltip
-                                        textStyle={{
-                                            color: 'black',
-                                            fontSize: 18,
-                                            fontFamily: 'Barlow',
-                                            width: 50,
-                                        }}>
-                                    </LineChart.Tooltip>
+                                <LineChart.Tooltip
+                                    textStyle={{
+                                    color: 'black',
+                                    fontSize: 18,
+                                    fontFamily: 'Barlow',
+                                    width: 50,
+                                    }}
+                                />
                                 </LineChart.CursorCrosshair>
                             </LineChart>
-                        </LineChart.Provider>
+                            </LineChart.Provider>
+                        )}
                     </ColorfulBox>
                 </ThemedView>
         </>

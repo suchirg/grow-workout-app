@@ -21,7 +21,8 @@ export default function ExerciseCreate() {
       name: exerciseName,
       reps: [],
       weights: [],
-      workout_id: currentlyViewedWorkout.id
+      workout_id: currentlyViewedWorkout.id,
+      created_at: new Date(),
     })
     navigateToWorkoutView();
   };

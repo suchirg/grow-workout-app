@@ -8,6 +8,7 @@ export type Exercise = {
     reps: number[];
     weights: number[]; // lbs
     workout_id: string;
+    created_at: Date;
 }
 
 export type Workout = {
@@ -61,7 +62,8 @@ export const initializeDatabase = async (db: SQLite.SQLiteDatabase): Promise<voi
                 name TEXT NOT NULL,
                 reps TEXT NOT NULL,  -- Store reps as JSON string
                 weights TEXT NOT NULL,  -- Store weight as JSON string
-                workout_id INTEGER,
+                workout_id INTEGER NOT NULL,
+                created_at DATETIME NOT NULL,
                 FOREIGN KEY (workout_id) REFERENCES workout(id)
             );
         `);
@@ -100,6 +102,7 @@ export const getExercises = async (workoutIdToFilterBy?: string) => {
         exercises.forEach((exercise) => {
             exercise.reps = JSON.parse(exercise.reps as unknown as string);
             exercise.weights = JSON.parse(exercise.weights as unknown as string);
+            exercise.created_at = new Date(exercise.created_at);
         });
 
     return exercises;
@@ -135,8 +138,8 @@ export const putExercise = async (exercise: Omit<Exercise, "id"> & {id?: string}
 
     if (!exercise.id){
         res = await db.runAsync(
-            `INSERT INTO exercise (name, reps, weights, workout_id) VALUES (?, ?, ?, ?)`,
-            [exercise.name, JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id]
+            `INSERT INTO exercise (name, reps, weights, workout_id, created_at) VALUES (?, ?, ?, ?, ?)`,
+            [exercise.name, JSON.stringify(exercise.reps), JSON.stringify(exercise.weights), exercise.workout_id, exercise.created_at.toISOString()]
         )
     } else {
         res = await db.runAsync(
