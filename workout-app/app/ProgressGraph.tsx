@@ -19,7 +19,6 @@ function invokeHaptic() {
 };
 
 function indexToDateString(index: number, buckets: {start: Date; end: Date;}[]) {
-    console.log(index, buckets);
     return index === - 1 ? "" : buckets[index].start.toLocaleDateString() + " - " + buckets[index].end.toLocaleDateString();
 }
 
@@ -27,6 +26,7 @@ type DataPoint = {
     timestamp: number;
     value: number; // one rep max value
 }
+const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
 export default function ProgressGraph() {
     const { exerciseName } = useLocalSearchParams();
@@ -39,14 +39,11 @@ export default function ProgressGraph() {
             const ormData: DataPoint[] = [];
             const exercises: Exercise[] = await getExercises();
 
-            const twelveWeeksAgo = new Date(Date.now() - 12 * 7 * 24 * 60 * 60 * 1000);
+            const twelveWeeksAgo = new Date(Date.now() - 12 * WEEK_IN_MS);
 
-            // TODO: fix daylight savings time issue in calcaulating buckets
             const newBuckets = Array.from({ length: 12 }, (_, i) => {
-                const start = new Date(twelveWeeksAgo);
-                start.setDate(start.getDate() + 7 * i);
-                const end = new Date(start);
-                end.setDate(end.getDate() + 7);
+                const start = new Date(twelveWeeksAgo.getTime() + i * WEEK_IN_MS);
+                const end = new Date(start.getTime() + WEEK_IN_MS);
                 return { start, end };
             }); 
             setBuckets(newBuckets);
