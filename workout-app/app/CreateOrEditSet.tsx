@@ -6,8 +6,8 @@ import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { putExercise } from "@/scripts/database";
 
-const navigateToWorkoutView = () => {
-  router.push("/WorkoutView");
+const navBack = () => {
+  router.dismiss();
 };
 
 export default function CreateOrEditSet() {
@@ -33,7 +33,7 @@ export default function CreateOrEditSet() {
     }
 
     await putExercise(exercise);
-    navigateToWorkoutView();
+    navBack();
   };
 
   return (

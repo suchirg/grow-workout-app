@@ -7,8 +7,8 @@ import { putWorkout, Workout } from "@/scripts/database";
 import { Picker } from "@react-native-picker/picker";
 import { useAppContext } from "@/components/AppContext";
 
-const viewFeed = () => {
-  router.push("/Feed");
+const navBack = () => {
+  router.dismiss();
 };
 
 function TemplateWorkoutPicker(
@@ -49,7 +49,7 @@ export default function WorkoutCreate() {
       title: workoutName,
       timestamp: new Date(),
     })
-    viewFeed();
+    navBack();
   };
 
   return (

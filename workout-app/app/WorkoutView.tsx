@@ -1,4 +1,4 @@
-import { router, Stack } from "expo-router";
+import { router, Stack, useFocusEffect } from "expo-router";
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Sets, showCreateOrEditSet } from "@/components/Set";
 
@@ -22,14 +22,15 @@ const createExercise = () => {
 export default function WorkoutView() {
   const {currentlyViewedWorkout } = useAppContext();
   
-  // get exercises for workout from db
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      setExercises(await getExercises(currentlyViewedWorkout.id));
-    };
+  const fetchWorkouts = async () => {
+    setExercises(await getExercises(currentlyViewedWorkout.id));
+  };
 
-    fetchWorkouts();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchWorkouts();
+    }, [])
+  );
 
   const [ exercises, setExercises ] = useState<Exercise[]>([]);
 

@@ -7,7 +7,7 @@ import { putExercise } from "@/scripts/database";
 import { useAppContext } from "@/components/AppContext";
 
 const navigateToWorkoutView = () => {
-    router.push("/WorkoutView");
+    router.dismiss();
 };
 
 export default function ExerciseCreate() {

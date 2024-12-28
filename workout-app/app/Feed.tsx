@@ -2,10 +2,10 @@ import { Workout } from "@/components/Workout";
 import { ThemedText } from "@/components/ThemedText";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getWorkouts, Workout as WorkoutType } from "@/scripts/database";
 import ColorfulBox from "@/components/ColorfulBox";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useAppContext } from "@/components/AppContext";
 import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 
@@ -21,14 +21,16 @@ const createWorkout = (): void => {
 export default function Feed() {
   const { workouts, setWorkouts, setCurrentlyViewedWorkout } = useAppContext();
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const data = await getWorkouts();
-      setWorkouts(data);
-    };
+  const fetchWorkouts = async () => {
+    const data = await getWorkouts();
+    setWorkouts(data);
+  };
 
-    fetchWorkouts();
-  }, []); // Empty dependency array means this effect runs once when the component mounts
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchWorkouts();
+    }, [])
+  );
 
   return (
     <>
