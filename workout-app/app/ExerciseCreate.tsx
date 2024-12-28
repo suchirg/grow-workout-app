@@ -16,6 +16,11 @@ export default function ExerciseCreate() {
   const { currentlyViewedWorkout } = useAppContext();
 
   const handleSave = async () => {
+    if (!exerciseName) {
+      Alert.alert("error", "enter a name for the exercise");
+      return;
+    }
+
     // Handle save logic here
     await putExercise({
       name: exerciseName,

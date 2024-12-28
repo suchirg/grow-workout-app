@@ -39,12 +39,16 @@ function TemplateWorkoutPicker(
 }
 
 export default function WorkoutCreate() {
-  // TODO: Add validation that workoutName is not empty
   const [workoutName, setWorkoutName] = useState("");
   const [selectedTemplateWorkoutId, setSelectedTemplateWorkoutId] = useState(-1);
   const { workouts } = useAppContext();
 
   const handleSave = async () => {
+    if (!workoutName) {
+      Alert.alert("error", "enter a name for the workout");
+      return;
+    }
+
     await putWorkout({
       title: workoutName,
       timestamp: new Date(),

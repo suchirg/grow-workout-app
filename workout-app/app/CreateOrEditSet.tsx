@@ -11,8 +11,6 @@ const navBack = () => {
 };
 
 export default function CreateOrEditSet() {
-  // TODO: need to have the current Exercise object we're editing (in order to PUT it) & which set in the exercise to edit
-  // TODO: Add validation that exerciseName is not empty
   const {exercise: exerciseString, setNumber: setNumberString} = useLocalSearchParams();
   const exercise = JSON.parse(exerciseString as string);
   const setNumber = Number(setNumberString);
