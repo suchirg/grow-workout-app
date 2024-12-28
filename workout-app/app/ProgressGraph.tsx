@@ -91,7 +91,7 @@ export default function ProgressGraph() {
             <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
                 <ThemedView style={{ flex: 1, justifyContent: 'center' }}>
                     <ThemedText type="title" style={styles.exerciseName}>{exerciseName}</ThemedText>
-                    <ThemedText type="subtitle" style={styles.subtitle}>{"one rep max progress"}</ThemedText>
+                    <ThemedText type="subtitle" style={styles.subtitle}>{"one rep max progress (lbs)"}</ThemedText>
                     <ThemedText type="subtitle" style={styles.subtitle}>{dateRangeViewing}</ThemedText>
                     <ColorfulBox childrenStyle={{backgroundColor: "#FFFFFF"}} boxStyle={{alignSelf: 'center'}} handlePress={() => {}}>                   
                         {ormData.length > 0 && (
