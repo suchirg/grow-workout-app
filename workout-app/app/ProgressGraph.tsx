@@ -32,7 +32,6 @@ export default function ProgressGraph() {
     const { exerciseName } = useLocalSearchParams();
     const [ ormData, setOrmData ] = useState<DataPoint[]>([]);
     const [ dateRangeViewing, setDateRangeViewing ] = useState<string>("");
-    const [loading, setLoading] = useState(true);
     const [buckets, setBuckets] = useState<{start: Date; end: Date;}[]>([]);
 
     useEffect(() => {
@@ -82,19 +81,10 @@ export default function ProgressGraph() {
             });
 
             setOrmData(ormData);
-            setLoading(false);
         }
 
         fetchExercises();
     }, [exerciseName]);
-
-    if (loading) {
-        return (
-            <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ThemedText type="title">Loading...</ThemedText>
-            </ThemedView>
-        );
-    }
 
     return (
         <>
