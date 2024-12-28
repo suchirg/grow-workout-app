@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, TextInput, Button, Alert, KeyboardAvoidingView,
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React, { useState } from "react";
-import { putWorkout, Workout } from "@/scripts/database";
+import { getExercises, putExercise, putWorkout, Workout } from "@/scripts/database";
 import { Picker } from "@react-native-picker/picker";
 import { useAppContext } from "@/components/AppContext";
 
@@ -49,10 +49,20 @@ export default function WorkoutCreate() {
       return;
     }
 
-    await putWorkout({
+    const newWorkoutId = (await putWorkout({
       title: workoutName,
       timestamp: new Date(),
-    })
+    })).lastInsertRowId;
+
+    if (newWorkoutId !== 0 && selectedTemplateWorkoutId !== -1){ // id 0 means no successful inserts on the table: https://www.sqlite.org/c3ref/last_insert_rowid.html 
+      (await getExercises(selectedTemplateWorkoutId.toString())).forEach(async (exercise) => {
+        exercise.workout_id = newWorkoutId.toString();
+        // @ts-ignore -- deleting id so that new exercise object is generated rather than updating the existing one
+        delete exercise.id; 
+        await putExercise(exercise);
+      });
+    }
+
     navBack();
   };
 
