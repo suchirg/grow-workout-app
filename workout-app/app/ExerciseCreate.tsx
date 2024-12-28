@@ -11,7 +11,6 @@ const navigateToWorkoutView = () => {
 };
 
 export default function ExerciseCreate() {
-  // TODO: Add validation that exerciseName is not empty
   const [exerciseName, setExerciseName] = useState("");
   const { currentlyViewedWorkout } = useAppContext();
 
