@@ -1,3 +1,3 @@
 # grow
 
-A minimilistic workout app.
+A minimalist workout app.
