@@ -2,5 +2,4 @@
 
 A minimalist workout app.
 
-https://github.com/user-attachments/assets/6274e560-ddf6-4f6a-9ab0-86d528143e85
-
+https://github.com/user-attachments/assets/1b6a7295-a9cf-4f48-a7c8-049ea2c65548
