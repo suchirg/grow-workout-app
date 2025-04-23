@@ -47,7 +47,7 @@ export default function Feed() {
           </View>
 
           { workouts.length > 0 ? 
-            workouts.map((workout, idx) => (
+            workouts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).map((workout, idx) => (
               <ColorfulBox key={idx} childrenStyle={{backgroundColor: "#31c1f5", marginTop: 15, padding:10 }} handlePress={() => {viewWorkout(workout, setCurrentlyViewedWorkout)}}>
                 <Workout style={styles.workout}
                   key={idx}

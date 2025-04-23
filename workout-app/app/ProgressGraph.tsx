@@ -57,10 +57,12 @@ export default function ProgressGraph() {
             });
             exercises.forEach((currentExercise) => {
                 const { created_at: createdAt } = currentExercise;
-                const weekBucketStartTime = (newBuckets.find(({ start, end }) => createdAt >= start && createdAt < end) as { start: Date, end: Date }).start.getTime();
-                exercisesGroupedByWeek[weekBucketStartTime].push(currentExercise);
+                const weekBucketStartTime = (newBuckets.find(({ start, end }) => createdAt >= start && createdAt < end) as { start: Date, end: Date })
+                if (weekBucketStartTime) {
+                    exercisesGroupedByWeek[weekBucketStartTime.start.getTime()].push(currentExercise);
+                }
             });
-
+            
             Object.entries(exercisesGroupedByWeek).forEach(([weekStartTime, exercises]) => {
                 let thisWeeks1RM = 0;
                 exercises.forEach((exercise) => {
@@ -79,7 +81,7 @@ export default function ProgressGraph() {
 
             setOrmData(ormData);
         }
-
+        
         fetchExercises();
     }, [exerciseName]);
 
@@ -90,7 +92,7 @@ export default function ProgressGraph() {
                     <ThemedText type="title" style={styles.exerciseName}>{exerciseName}</ThemedText>
                     <ThemedText type="subtitle" style={styles.subtitle}>{"one rep max progress (lbs)"}</ThemedText>
                     <ThemedText type="subtitle" style={styles.subtitle}>{dateRangeViewing}</ThemedText>
-                    <ColorfulBox childrenStyle={{backgroundColor: "#FFFFFF"}} boxStyle={{alignSelf: 'center'}} handlePress={() => {}}>                   
+                    <ColorfulBox childrenStyle={{backgroundColor: "#FFFFFF"}} boxStyle={{alignSelf: 'center'}} handlePress={() => {}}>
                         {ormData.length > 0 && (
                             <LineChart.Provider data={ormData} onCurrentIndexChange={(index) => {
                                 invokeHaptic();
